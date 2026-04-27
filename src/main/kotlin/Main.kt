@@ -1,16 +1,29 @@
 package org.example
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+import java.io.File
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
+fun main(args: Array<String>) {
+    // instancia template dado o argumento nome do ficheiro template
+
+
+    if (args.isEmpty()) {
+        println("error: esse comando não estáa certo")
+        return
     }
+    // engine.kt -f "template.txt" -i "input.json" -o "result.txt"
+    if (args.size != 6) {
+        println("error: not right amount of arguments")
+        return
+    }
+
+    val template = args[args.indexOf("-f") + 1]
+    val input = args.get(args.indexOf("-i") + 1)
+    val output = args.get(args.indexOf("-o") + 1)
+
+    //TODO
+    val tempFile = File(template).readText()
+    val inputFile = File(input).readText()
+//    val outputFile = File(output).writeText("RESULTADO AQUI")
+
+
 }
