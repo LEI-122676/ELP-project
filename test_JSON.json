@@ -1,0 +1,18 @@
+{
+  "string1": "ola",
+  "booleanos1": false,
+
+  "booleanos2": true,
+  "nulleanos": null,
+  "inteiro1": 123,
+  "inteiro2"      : -123,
+  "float2"   : 123.456,
+  "float3"      : -123.456,
+  "float4"      : 100000000000000001,
+  "float5"      : 10000000000000000.00000000000,
+  "object1": {"name":"John", "age":30, "city":"New York"},
+  "object2": {},
+  "array1": ["Joca", "Tino", "Panda"],
+  "array2": ["Joca", {"name":"John", "age":30, "city":"New York"}, [1,2,3,4]],
+  "array3": []
+}
