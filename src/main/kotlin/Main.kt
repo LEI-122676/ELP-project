@@ -1,5 +1,4 @@
 package org.example
-
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -24,6 +23,5 @@ fun main(args: Array<String>) {
     val tempFile = File(template).readText()
     val inputFile = File(input).readText()
 //    val outputFile = File(output).writeText("RESULTADO AQUI")
-
 
 }
