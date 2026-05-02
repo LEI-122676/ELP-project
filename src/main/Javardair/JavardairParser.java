@@ -16,11 +16,9 @@ public class JavardairParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, LITERAL=7, VARIABLE=8, 
-		OPERATOR=9, EQUAL=10, PLUS=11, MINUS=12, TIMES=13, DIVISION=14, MODULE=15, 
-		EQUALSTO=16, DIFFERENT=17, LESSTHEN=18, LESSOREQUALTO=19, GREATERTHEN=20, 
-		GREATEROREQUALTO=21, OPENPARENTHESIS=22, CLOSEPARENTHESIS=23, OPENBRACKETS=24, 
-		CLOSEBRACKETS=25, COMMENT=26, SEPARATOR=27, WS=28;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, TYPE=6, VARIABLE=7, LITERAL=8, 
+		OPERATOR=9, EQUAL=10, OPENPARENTHESIS=11, CLOSEPARENTHESIS=12, OPENBRACKETS=13, 
+		CLOSEBRACKETS=14, COMMENT=15, SEPARATOR=16, WS=17;
 	public static final int
 		RULE_script = 0, RULE_instruction = 1, RULE_controlstructure = 2, RULE_assign = 3, 
 		RULE_expression = 4, RULE_term = 5, RULE_print = 6, RULE_break = 7, RULE_ifelse = 8, 
@@ -35,18 +33,15 @@ public class JavardairParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "':='", "'print'", "'break'", "'if'", "'else'", "'while'", null, 
-			null, null, "'='", "'+'", "'-'", "'*'", "'/'", "'%'", "'=='", "'!='", 
-			"'<'", "'<='", "'>'", "'>='", "'('", "')'", "'{'", "'}'", null, "';'"
+			null, "'print'", "'break'", "'if'", "'else'", "'while'", null, null, 
+			null, null, "':='", "'('", "')'", "'{'", "'}'", null, "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, "LITERAL", "VARIABLE", "OPERATOR", 
-			"EQUAL", "PLUS", "MINUS", "TIMES", "DIVISION", "MODULE", "EQUALSTO", 
-			"DIFFERENT", "LESSTHEN", "LESSOREQUALTO", "GREATERTHEN", "GREATEROREQUALTO", 
-			"OPENPARENTHESIS", "CLOSEPARENTHESIS", "OPENBRACKETS", "CLOSEBRACKETS", 
+			null, null, null, null, null, null, "TYPE", "VARIABLE", "LITERAL", "OPERATOR", 
+			"EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", "OPENBRACKETS", "CLOSEBRACKETS", 
 			"COMMENT", "SEPARATOR", "WS"
 		};
 	}
@@ -148,7 +143,7 @@ public class JavardairParser extends Parser {
 				setState(25); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 348L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -202,29 +197,29 @@ public class JavardairParser extends Parser {
 			setState(31);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__3:
-			case T__5:
+			case T__2:
+			case T__4:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(27);
 				controlstructure();
 				}
 				break;
-			case VARIABLE:
+			case TYPE:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(28);
 				assign();
 				}
 				break;
-			case T__1:
+			case T__0:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(29);
 				print();
 				}
 				break;
-			case T__2:
+			case T__1:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(30);
@@ -280,14 +275,14 @@ public class JavardairParser extends Parser {
 			setState(35);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__3:
+			case T__2:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(33);
 				ifelse();
 				}
 				break;
-			case T__5:
+			case T__4:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(34);
@@ -311,7 +306,9 @@ public class JavardairParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class AssignContext extends ParserRuleContext {
+		public TerminalNode TYPE() { return getToken(JavardairParser.TYPE, 0); }
 		public TerminalNode VARIABLE() { return getToken(JavardairParser.VARIABLE, 0); }
+		public TerminalNode EQUAL() { return getToken(JavardairParser.EQUAL, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -342,12 +339,14 @@ public class JavardairParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(37);
-			match(VARIABLE);
+			match(TYPE);
 			setState(38);
-			match(T__0);
+			match(VARIABLE);
 			setState(39);
-			expression();
+			match(EQUAL);
 			setState(40);
+			expression();
+			setState(41);
 			match(SEPARATOR);
 			}
 		}
@@ -400,21 +399,21 @@ public class JavardairParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(42);
+			setState(43);
 			term();
-			setState(47);
+			setState(48);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==OPERATOR) {
 				{
 				{
-				setState(43);
-				match(OPERATOR);
 				setState(44);
+				match(OPERATOR);
+				setState(45);
 				term();
 				}
 				}
-				setState(49);
+				setState(50);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -463,31 +462,31 @@ public class JavardairParser extends Parser {
 		TermContext _localctx = new TermContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_term);
 		try {
-			setState(56);
+			setState(57);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LITERAL:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(50);
+				setState(51);
 				match(LITERAL);
 				}
 				break;
 			case VARIABLE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(51);
+				setState(52);
 				match(VARIABLE);
 				}
 				break;
 			case OPENPARENTHESIS:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(52);
-				match(OPENPARENTHESIS);
 				setState(53);
-				expression();
+				match(OPENPARENTHESIS);
 				setState(54);
+				expression();
+				setState(55);
 				match(CLOSEPARENTHESIS);
 				}
 				break;
@@ -537,11 +536,11 @@ public class JavardairParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(58);
-			match(T__1);
 			setState(59);
-			expression();
+			match(T__0);
 			setState(60);
+			expression();
+			setState(61);
 			match(SEPARATOR);
 			}
 		}
@@ -584,9 +583,9 @@ public class JavardairParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
-			match(T__2);
 			setState(63);
+			match(T__1);
+			setState(64);
 			match(SEPARATOR);
 			}
 		}
@@ -603,6 +602,8 @@ public class JavardairParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class IfelseContext extends ParserRuleContext {
+		public InstructionContext ifSequence;
+		public InstructionContext elseSequence;
 		public GuardContext guard() {
 			return getRuleContext(GuardContext.class,0);
 		}
@@ -646,52 +647,52 @@ public class JavardairParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(65);
-			match(T__3);
 			setState(66);
-			guard();
+			match(T__2);
 			setState(67);
+			guard();
+			setState(68);
 			match(OPENBRACKETS);
-			setState(69); 
+			setState(70); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(68);
-				instruction();
+				setState(69);
+				((IfelseContext)_localctx).ifSequence = instruction();
 				}
 				}
-				setState(71); 
+				setState(72); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 348L) != 0) );
-			setState(73);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+			setState(74);
 			match(CLOSEBRACKETS);
-			setState(83);
+			setState(84);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__4) {
+			if (_la==T__3) {
 				{
-				setState(74);
-				match(T__4);
 				setState(75);
+				match(T__3);
+				setState(76);
 				match(OPENBRACKETS);
-				setState(77); 
+				setState(78); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(76);
-					instruction();
+					setState(77);
+					((IfelseContext)_localctx).elseSequence = instruction();
 					}
 					}
-					setState(79); 
+					setState(80); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 348L) != 0) );
-				setState(81);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+				setState(82);
 				match(CLOSEBRACKETS);
 				}
 			}
@@ -711,6 +712,7 @@ public class JavardairParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class WhileContext extends ParserRuleContext {
+		public InstructionContext sequence;
 		public GuardContext guard() {
 			return getRuleContext(GuardContext.class,0);
 		}
@@ -748,27 +750,27 @@ public class JavardairParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
-			match(T__5);
 			setState(86);
-			guard();
+			match(T__4);
 			setState(87);
+			guard();
+			setState(88);
 			match(OPENBRACKETS);
-			setState(89); 
+			setState(90); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(88);
-				instruction();
+				setState(89);
+				((WhileContext)_localctx).sequence = instruction();
 				}
 				}
-				setState(91); 
+				setState(92); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 348L) != 0) );
-			setState(93);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+			setState(94);
 			match(CLOSEBRACKETS);
 			}
 		}
@@ -815,11 +817,11 @@ public class JavardairParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(95);
-			match(OPENPARENTHESIS);
 			setState(96);
-			expression();
+			match(OPENPARENTHESIS);
 			setState(97);
+			expression();
+			setState(98);
 			match(CLOSEPARENTHESIS);
 			}
 		}
@@ -835,61 +837,61 @@ public class JavardairParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u001cd\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0011e\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0001\u0000\u0004\u0000\u0018"+
 		"\b\u0000\u000b\u0000\f\u0000\u0019\u0001\u0001\u0001\u0001\u0001\u0001"+
 		"\u0001\u0001\u0003\u0001 \b\u0001\u0001\u0002\u0001\u0002\u0003\u0002"+
 		"$\b\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0005\u0004.\b\u0004\n\u0004\f\u0004"+
-		"1\t\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005"+
-		"\u0001\u0005\u0003\u00059\b\u0005\u0001\u0006\u0001\u0006\u0001\u0006"+
-		"\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001\b\u0001"+
-		"\b\u0001\b\u0004\bF\b\b\u000b\b\f\bG\u0001\b\u0001\b\u0001\b\u0001\b\u0004"+
-		"\bN\b\b\u000b\b\f\bO\u0001\b\u0001\b\u0003\bT\b\b\u0001\t\u0001\t\u0001"+
-		"\t\u0001\t\u0004\tZ\b\t\u000b\t\f\t[\u0001\t\u0001\t\u0001\n\u0001\n\u0001"+
-		"\n\u0001\n\u0001\n\u0000\u0000\u000b\u0000\u0002\u0004\u0006\b\n\f\u000e"+
-		"\u0010\u0012\u0014\u0000\u0000d\u0000\u0017\u0001\u0000\u0000\u0000\u0002"+
-		"\u001f\u0001\u0000\u0000\u0000\u0004#\u0001\u0000\u0000\u0000\u0006%\u0001"+
-		"\u0000\u0000\u0000\b*\u0001\u0000\u0000\u0000\n8\u0001\u0000\u0000\u0000"+
-		"\f:\u0001\u0000\u0000\u0000\u000e>\u0001\u0000\u0000\u0000\u0010A\u0001"+
-		"\u0000\u0000\u0000\u0012U\u0001\u0000\u0000\u0000\u0014_\u0001\u0000\u0000"+
-		"\u0000\u0016\u0018\u0003\u0002\u0001\u0000\u0017\u0016\u0001\u0000\u0000"+
-		"\u0000\u0018\u0019\u0001\u0000\u0000\u0000\u0019\u0017\u0001\u0000\u0000"+
-		"\u0000\u0019\u001a\u0001\u0000\u0000\u0000\u001a\u0001\u0001\u0000\u0000"+
-		"\u0000\u001b \u0003\u0004\u0002\u0000\u001c \u0003\u0006\u0003\u0000\u001d"+
-		" \u0003\f\u0006\u0000\u001e \u0003\u000e\u0007\u0000\u001f\u001b\u0001"+
-		"\u0000\u0000\u0000\u001f\u001c\u0001\u0000\u0000\u0000\u001f\u001d\u0001"+
-		"\u0000\u0000\u0000\u001f\u001e\u0001\u0000\u0000\u0000 \u0003\u0001\u0000"+
-		"\u0000\u0000!$\u0003\u0010\b\u0000\"$\u0003\u0012\t\u0000#!\u0001\u0000"+
-		"\u0000\u0000#\"\u0001\u0000\u0000\u0000$\u0005\u0001\u0000\u0000\u0000"+
-		"%&\u0005\b\u0000\u0000&\'\u0005\u0001\u0000\u0000\'(\u0003\b\u0004\u0000"+
-		"()\u0005\u001b\u0000\u0000)\u0007\u0001\u0000\u0000\u0000*/\u0003\n\u0005"+
-		"\u0000+,\u0005\t\u0000\u0000,.\u0003\n\u0005\u0000-+\u0001\u0000\u0000"+
-		"\u0000.1\u0001\u0000\u0000\u0000/-\u0001\u0000\u0000\u0000/0\u0001\u0000"+
-		"\u0000\u00000\t\u0001\u0000\u0000\u00001/\u0001\u0000\u0000\u000029\u0005"+
-		"\u0007\u0000\u000039\u0005\b\u0000\u000045\u0005\u0016\u0000\u000056\u0003"+
-		"\b\u0004\u000067\u0005\u0017\u0000\u000079\u0001\u0000\u0000\u000082\u0001"+
-		"\u0000\u0000\u000083\u0001\u0000\u0000\u000084\u0001\u0000\u0000\u0000"+
-		"9\u000b\u0001\u0000\u0000\u0000:;\u0005\u0002\u0000\u0000;<\u0003\b\u0004"+
-		"\u0000<=\u0005\u001b\u0000\u0000=\r\u0001\u0000\u0000\u0000>?\u0005\u0003"+
-		"\u0000\u0000?@\u0005\u001b\u0000\u0000@\u000f\u0001\u0000\u0000\u0000"+
-		"AB\u0005\u0004\u0000\u0000BC\u0003\u0014\n\u0000CE\u0005\u0018\u0000\u0000"+
-		"DF\u0003\u0002\u0001\u0000ED\u0001\u0000\u0000\u0000FG\u0001\u0000\u0000"+
-		"\u0000GE\u0001\u0000\u0000\u0000GH\u0001\u0000\u0000\u0000HI\u0001\u0000"+
-		"\u0000\u0000IS\u0005\u0019\u0000\u0000JK\u0005\u0005\u0000\u0000KM\u0005"+
-		"\u0018\u0000\u0000LN\u0003\u0002\u0001\u0000ML\u0001\u0000\u0000\u0000"+
-		"NO\u0001\u0000\u0000\u0000OM\u0001\u0000\u0000\u0000OP\u0001\u0000\u0000"+
-		"\u0000PQ\u0001\u0000\u0000\u0000QR\u0005\u0019\u0000\u0000RT\u0001\u0000"+
-		"\u0000\u0000SJ\u0001\u0000\u0000\u0000ST\u0001\u0000\u0000\u0000T\u0011"+
-		"\u0001\u0000\u0000\u0000UV\u0005\u0006\u0000\u0000VW\u0003\u0014\n\u0000"+
-		"WY\u0005\u0018\u0000\u0000XZ\u0003\u0002\u0001\u0000YX\u0001\u0000\u0000"+
-		"\u0000Z[\u0001\u0000\u0000\u0000[Y\u0001\u0000\u0000\u0000[\\\u0001\u0000"+
-		"\u0000\u0000\\]\u0001\u0000\u0000\u0000]^\u0005\u0019\u0000\u0000^\u0013"+
-		"\u0001\u0000\u0000\u0000_`\u0005\u0016\u0000\u0000`a\u0003\b\u0004\u0000"+
-		"ab\u0005\u0017\u0000\u0000b\u0015\u0001\u0000\u0000\u0000\t\u0019\u001f"+
-		"#/8GOS[";
+		"\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0005\u0004/\b\u0004"+
+		"\n\u0004\f\u00042\t\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005"+
+		"\u0001\u0005\u0001\u0005\u0003\u0005:\b\u0005\u0001\u0006\u0001\u0006"+
+		"\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001\b\u0001"+
+		"\b\u0001\b\u0001\b\u0004\bG\b\b\u000b\b\f\bH\u0001\b\u0001\b\u0001\b\u0001"+
+		"\b\u0004\bO\b\b\u000b\b\f\bP\u0001\b\u0001\b\u0003\bU\b\b\u0001\t\u0001"+
+		"\t\u0001\t\u0001\t\u0004\t[\b\t\u000b\t\f\t\\\u0001\t\u0001\t\u0001\n"+
+		"\u0001\n\u0001\n\u0001\n\u0001\n\u0000\u0000\u000b\u0000\u0002\u0004\u0006"+
+		"\b\n\f\u000e\u0010\u0012\u0014\u0000\u0000e\u0000\u0017\u0001\u0000\u0000"+
+		"\u0000\u0002\u001f\u0001\u0000\u0000\u0000\u0004#\u0001\u0000\u0000\u0000"+
+		"\u0006%\u0001\u0000\u0000\u0000\b+\u0001\u0000\u0000\u0000\n9\u0001\u0000"+
+		"\u0000\u0000\f;\u0001\u0000\u0000\u0000\u000e?\u0001\u0000\u0000\u0000"+
+		"\u0010B\u0001\u0000\u0000\u0000\u0012V\u0001\u0000\u0000\u0000\u0014`"+
+		"\u0001\u0000\u0000\u0000\u0016\u0018\u0003\u0002\u0001\u0000\u0017\u0016"+
+		"\u0001\u0000\u0000\u0000\u0018\u0019\u0001\u0000\u0000\u0000\u0019\u0017"+
+		"\u0001\u0000\u0000\u0000\u0019\u001a\u0001\u0000\u0000\u0000\u001a\u0001"+
+		"\u0001\u0000\u0000\u0000\u001b \u0003\u0004\u0002\u0000\u001c \u0003\u0006"+
+		"\u0003\u0000\u001d \u0003\f\u0006\u0000\u001e \u0003\u000e\u0007\u0000"+
+		"\u001f\u001b\u0001\u0000\u0000\u0000\u001f\u001c\u0001\u0000\u0000\u0000"+
+		"\u001f\u001d\u0001\u0000\u0000\u0000\u001f\u001e\u0001\u0000\u0000\u0000"+
+		" \u0003\u0001\u0000\u0000\u0000!$\u0003\u0010\b\u0000\"$\u0003\u0012\t"+
+		"\u0000#!\u0001\u0000\u0000\u0000#\"\u0001\u0000\u0000\u0000$\u0005\u0001"+
+		"\u0000\u0000\u0000%&\u0005\u0006\u0000\u0000&\'\u0005\u0007\u0000\u0000"+
+		"\'(\u0005\n\u0000\u0000()\u0003\b\u0004\u0000)*\u0005\u0010\u0000\u0000"+
+		"*\u0007\u0001\u0000\u0000\u0000+0\u0003\n\u0005\u0000,-\u0005\t\u0000"+
+		"\u0000-/\u0003\n\u0005\u0000.,\u0001\u0000\u0000\u0000/2\u0001\u0000\u0000"+
+		"\u00000.\u0001\u0000\u0000\u000001\u0001\u0000\u0000\u00001\t\u0001\u0000"+
+		"\u0000\u000020\u0001\u0000\u0000\u00003:\u0005\b\u0000\u00004:\u0005\u0007"+
+		"\u0000\u000056\u0005\u000b\u0000\u000067\u0003\b\u0004\u000078\u0005\f"+
+		"\u0000\u00008:\u0001\u0000\u0000\u000093\u0001\u0000\u0000\u000094\u0001"+
+		"\u0000\u0000\u000095\u0001\u0000\u0000\u0000:\u000b\u0001\u0000\u0000"+
+		"\u0000;<\u0005\u0001\u0000\u0000<=\u0003\b\u0004\u0000=>\u0005\u0010\u0000"+
+		"\u0000>\r\u0001\u0000\u0000\u0000?@\u0005\u0002\u0000\u0000@A\u0005\u0010"+
+		"\u0000\u0000A\u000f\u0001\u0000\u0000\u0000BC\u0005\u0003\u0000\u0000"+
+		"CD\u0003\u0014\n\u0000DF\u0005\r\u0000\u0000EG\u0003\u0002\u0001\u0000"+
+		"FE\u0001\u0000\u0000\u0000GH\u0001\u0000\u0000\u0000HF\u0001\u0000\u0000"+
+		"\u0000HI\u0001\u0000\u0000\u0000IJ\u0001\u0000\u0000\u0000JT\u0005\u000e"+
+		"\u0000\u0000KL\u0005\u0004\u0000\u0000LN\u0005\r\u0000\u0000MO\u0003\u0002"+
+		"\u0001\u0000NM\u0001\u0000\u0000\u0000OP\u0001\u0000\u0000\u0000PN\u0001"+
+		"\u0000\u0000\u0000PQ\u0001\u0000\u0000\u0000QR\u0001\u0000\u0000\u0000"+
+		"RS\u0005\u000e\u0000\u0000SU\u0001\u0000\u0000\u0000TK\u0001\u0000\u0000"+
+		"\u0000TU\u0001\u0000\u0000\u0000U\u0011\u0001\u0000\u0000\u0000VW\u0005"+
+		"\u0005\u0000\u0000WX\u0003\u0014\n\u0000XZ\u0005\r\u0000\u0000Y[\u0003"+
+		"\u0002\u0001\u0000ZY\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000\u0000"+
+		"\\Z\u0001\u0000\u0000\u0000\\]\u0001\u0000\u0000\u0000]^\u0001\u0000\u0000"+
+		"\u0000^_\u0005\u000e\u0000\u0000_\u0013\u0001\u0000\u0000\u0000`a\u0005"+
+		"\u000b\u0000\u0000ab\u0003\b\u0004\u0000bc\u0005\f\u0000\u0000c\u0015"+
+		"\u0001\u0000\u0000\u0000\t\u0019\u001f#09HPT\\";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
