@@ -14,6 +14,17 @@ dependencies {
     implementation("org.antlr:antlr4:4.13.2")
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir("src/main/Javardair")
+            srcDir("src/main/JSON")
+
+
+        }
+    }
+}
+
 kotlin {
     jvmToolchain(25)
 }
