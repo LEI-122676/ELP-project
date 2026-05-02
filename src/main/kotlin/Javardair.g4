@@ -2,29 +2,34 @@ grammar Javardair;
 
 script: instruction+;
 
-instruction: controlstructure | assign | print | break;
+instruction: /*function | */ controlstructure | assign | print | break;
+
+//function: 'function' VARIABLE OPENPARENTHESIS (VARIABLE (',' VARIABLE)*)? CLOSEPARENTHESIS OPENBRACKETS instruction+ CLOSEBRACKETS;
 
 controlstructure: ifelse | while;
 
-assign: VARIABLE EQUAL expression SEPARATOR;
+assign: TYPE VARIABLE EQUAL expression SEPARATOR;
 
 expression: term (OPERATOR term)*;
 
-term: LITERAL | VARIABLE | OPENPARENTHESIS expression CLOSEPARENTHESIS;
+term: NUMBER | VARIABLE | OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 print: 'print' expression SEPARATOR;
 
 break: 'break' SEPARATOR;
 
-ifelse: 'if' guard OPENBRACKETS instruction+ CLOSEBRACKETS
-        ('else' OPENBRACKETS instruction+ CLOSEBRACKETS)?;
-while: 'while' guard OPENBRACKETS instruction+ CLOSEBRACKETS;
+ifelse: 'if' guard OPENBRACKETS ifSequence=instruction+ CLOSEBRACKETS
+        ('else' OPENBRACKETS elseSequence=instruction+ CLOSEBRACKETS)?;
+while: 'while' guard OPENBRACKETS sequence=instruction+ CLOSEBRACKETS;
 
 guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 
-LITERAL: [0-9]+;
-VARIABLE: [A-Za-z]+;
+TYPE: 'mut' | 'const';
+VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
+
+NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
+DIGIT: [0-9];
 
 OPERATOR: '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '<=' | '>' | '>=';
 
