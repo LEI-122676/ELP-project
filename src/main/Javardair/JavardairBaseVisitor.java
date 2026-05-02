@@ -1,4 +1,4 @@
-// Generated from C:/Users/patri/Desktop/ISCTE/ELP/ELP-project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
+// Generated from /mnt/SharedData/documents/university/3-ano/2-sem/ELP/project/project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -39,6 +39,13 @@ public class JavardairBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitAssign(JavardairParser.AssignContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitType(JavardairParser.TypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

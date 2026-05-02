@@ -1,10 +1,5 @@
 const a := 5;
-
-mut
-    b
-:=
-6
-;
+mut b := 6 == 2;
 
 if (a < b) {
     print(1);

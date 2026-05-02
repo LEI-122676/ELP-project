@@ -1,4 +1,4 @@
-// Generated from C:/Users/patri/Desktop/ISCTE/ELP/ELP-project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
+// Generated from /mnt/SharedData/documents/university/3-ano/2-sem/ELP/project/project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -59,6 +59,18 @@ public class JavardairBaseListener implements JavardairListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssign(JavardairParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterType(JavardairParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType(JavardairParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

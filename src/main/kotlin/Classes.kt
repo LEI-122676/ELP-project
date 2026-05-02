@@ -9,8 +9,8 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
         fun checkExpression(expression: Expression, lineIndex: Int) {
             when (expression) {
                 is Variable -> {
-                    if (!definedVariables.contains(expression.varId)) {
-                        errors.add(VarError(expression.varId, lineIndex))
+                    if (!definedVariables.contains(expression.variableName)) {
+                        errors.add(VarError(expression.variableName, lineIndex))
                     }
                 }
                 is BinaryExpression -> {
@@ -36,8 +36,8 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                 }
                 is Assign -> {
                     checkExpression(instruction.expression, lineIndex)
-                    if (!definedVariables.contains(instruction.varId)) {
-                        definedVariables.add(instruction.varId)
+                    if (!definedVariables.contains(instruction.variableName)) {
+                        definedVariables.add(instruction.variableName)
                     }
                 }
                 is Print -> {
@@ -128,9 +128,9 @@ class Break: Instruction {
     }
 }
 
-data class Assign(val type: String, val varId: String, val expression: Expression): Instruction {
+data class Assign(val type: Type, val variableName: String, val expression: Expression): Instruction {
     override fun toString(): String {
-        return "$varId = $expression;"
+        return "$variableName = $expression;"
     }
 }
 
@@ -152,15 +152,28 @@ data class Literal(val value: Int): Expression {
     }
 }
 
-data class Variable(val varId: String): Expression {
+data class Variable(val variableName: String): Expression {
     override fun toString(): String {
-        return varId
+        return variableName
     }
 }
 
 data class BinaryExpression(val left: Expression, val operator: Operator, val right: Expression): Expression {
     override fun toString(): String {
         return "$left $operator $right"
+    }
+}
+
+enum class Type {
+    MUTABLE {
+        override fun toString(): String {
+            return "mut"
+        }
+    },
+    CONSTANT {
+        override fun toString(): String {
+            return "const"
+        }
     }
 }
 

@@ -2,13 +2,15 @@ grammar Javardair;
 
 script: instruction+;
 
-instruction: /*function | */ controlstructure | assign | print | break;
+instruction: /*function | */break | controlstructure | assign | print;
 
 //function: 'function' VARIABLE OPENPARENTHESIS (VARIABLE (',' VARIABLE)*)? CLOSEPARENTHESIS OPENBRACKETS instruction+ CLOSEBRACKETS;
 
 controlstructure: ifelse | while;
 
-assign: TYPE VARIABLE EQUAL expression SEPARATOR;
+assign: type VARIABLE EQUAL expression SEPARATOR;   // mut nomeVariavel = 123;
+
+type: MUT | CONST;
 
 expression: term (OPERATOR term)*;
 
@@ -24,9 +26,11 @@ while: 'while' guard OPENBRACKETS sequence=instruction+ CLOSEBRACKETS;
 
 guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
-
-TYPE: 'mut' | 'const';
 BREAK : 'break';
+
+MUT: 'mut';
+CONST: 'const';
+
 VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
 
 NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;

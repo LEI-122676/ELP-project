@@ -2,8 +2,8 @@ package org.example
 
 import JavardairParser
 
-fun JavardairParser.ScriptContext.toAST(): Script =
-    Script(instruction().map { it.toAST() }, emptyList())
+fun JavardairParser.ScriptContext.toAST(parameters: List<String> = emptyList()): Script =
+    Script(instruction().map { it.toAST() }, parameters)
 
 fun JavardairParser.InstructionContext.toAST(): Instruction =
     when {
@@ -22,7 +22,14 @@ fun JavardairParser.ControlstructureContext.toAST(): Instruction =
     }
 
 fun JavardairParser.AssignContext.toAST(): Assign =
-    Assign(TYPE().text, VARIABLE().text, expression().toAST())
+    Assign(type().toAST(), VARIABLE().text, expression().toAST())
+
+fun JavardairParser.TypeContext.toAST(): Type =
+    when (this.text) {
+        "MUTABLE" -> Type.MUTABLE
+        "CONSTANT" -> Type.CONSTANT
+        else -> throw IllegalArgumentException("Unknown type: $this")
+    }
 
 fun JavardairParser.ExpressionContext.toAST(): Expression {
     val terms = term()

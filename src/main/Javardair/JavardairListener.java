@@ -1,4 +1,4 @@
-// Generated from C:/Users/patri/Desktop/ISCTE/ELP/ELP-project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
+// Generated from /mnt/SharedData/documents/university/3-ano/2-sem/ELP/project/project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -46,6 +46,16 @@ public interface JavardairListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssign(JavardairParser.AssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link JavardairParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(JavardairParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavardairParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(JavardairParser.TypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavardairParser#expression}.
 	 * @param ctx the parse tree

@@ -1,4 +1,4 @@
-// Generated from C:/Users/patri/Desktop/ISCTE/ELP/ELP-project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
+// Generated from /mnt/SharedData/documents/university/3-ano/2-sem/ELP/project/project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -33,6 +33,12 @@ public interface JavardairVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssign(JavardairParser.AssignContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link JavardairParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(JavardairParser.TypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavardairParser#expression}.
 	 * @param ctx the parse tree
