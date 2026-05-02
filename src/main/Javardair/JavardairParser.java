@@ -16,7 +16,7 @@ public class JavardairParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, MUT=5, CONST=6, BREAK=7, VARIABLE=8, NUMBER=9, 
+		T__0=1, T__1=2, T__2=3, T__3=4, BREAK=5, MUT=6, CONST=7, VARIABLE=8, NUMBER=9, 
 		DIGIT=10, OPERATOR=11, EQUAL=12, OPENPARENTHESIS=13, CLOSEPARENTHESIS=14, 
 		OPENBRACKETS=15, CLOSEBRACKETS=16, COMMENT=17, SEPARATOR=18, WS=19;
 	public static final int
@@ -33,14 +33,14 @@ public class JavardairParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'print'", "'if'", "'else'", "'while'", "'mut'", "'const'", "'break'", 
+			null, "'print'", "'if'", "'else'", "'while'", "'break'", "'mut'", "'const'", 
 			null, null, null, null, "':='", "'('", "')'", "'{'", "'}'", null, "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, "MUT", "CONST", "BREAK", "VARIABLE", "NUMBER", 
+			null, null, null, null, null, "BREAK", "MUT", "CONST", "VARIABLE", "NUMBER", 
 			"DIGIT", "OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", 
 			"OPENBRACKETS", "CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
 		};
@@ -159,6 +159,9 @@ public class JavardairParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class InstructionContext extends ParserRuleContext {
+		public BreakContext break_() {
+			return getRuleContext(BreakContext.class,0);
+		}
 		public ControlstructureContext controlstructure() {
 			return getRuleContext(ControlstructureContext.class,0);
 		}
@@ -167,9 +170,6 @@ public class JavardairParser extends Parser {
 		}
 		public PrintContext print() {
 			return getRuleContext(PrintContext.class,0);
-		}
-		public BreakContext break_() {
-			return getRuleContext(BreakContext.class,0);
 		}
 		public InstructionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -197,34 +197,34 @@ public class JavardairParser extends Parser {
 			setState(33);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__1:
-			case T__3:
+			case BREAK:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(29);
+				break_();
+				}
+				break;
+			case T__1:
+			case T__3:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(30);
 				controlstructure();
 				}
 				break;
 			case MUT:
 			case CONST:
-				enterOuterAlt(_localctx, 2);
+				enterOuterAlt(_localctx, 3);
 				{
-				setState(30);
+				setState(31);
 				assign();
 				}
 				break;
 			case T__0:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(31);
-				print();
-				}
-				break;
-			case BREAK:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(32);
-				break_();
+				print();
 				}
 				break;
 			default:
@@ -910,7 +910,7 @@ public class JavardairParser extends Parser {
 		"T\u0001\t\u0001\t\u0003\tY\b\t\u0001\n\u0001\n\u0001\n\u0001\n\u0004\n"+
 		"_\b\n\u000b\n\f\n`\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b"+
 		"\u0001\u000b\u0001\u000b\u0000\u0000\f\u0000\u0002\u0004\u0006\b\n\f\u000e"+
-		"\u0010\u0012\u0014\u0016\u0000\u0001\u0001\u0000\u0005\u0006h\u0000\u0019"+
+		"\u0010\u0012\u0014\u0016\u0000\u0001\u0001\u0000\u0006\u0007h\u0000\u0019"+
 		"\u0001\u0000\u0000\u0000\u0002!\u0001\u0000\u0000\u0000\u0004%\u0001\u0000"+
 		"\u0000\u0000\u0006\'\u0001\u0000\u0000\u0000\b-\u0001\u0000\u0000\u0000"+
 		"\n/\u0001\u0000\u0000\u0000\f=\u0001\u0000\u0000\u0000\u000e?\u0001\u0000"+
@@ -919,8 +919,8 @@ public class JavardairParser extends Parser {
 		"\u0003\u0002\u0001\u0000\u0019\u0018\u0001\u0000\u0000\u0000\u001a\u001b"+
 		"\u0001\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001b\u001c"+
 		"\u0001\u0000\u0000\u0000\u001c\u0001\u0001\u0000\u0000\u0000\u001d\"\u0003"+
-		"\u0004\u0002\u0000\u001e\"\u0003\u0006\u0003\u0000\u001f\"\u0003\u000e"+
-		"\u0007\u0000 \"\u0003\u0010\b\u0000!\u001d\u0001\u0000\u0000\u0000!\u001e"+
+		"\u0010\b\u0000\u001e\"\u0003\u0004\u0002\u0000\u001f\"\u0003\u0006\u0003"+
+		"\u0000 \"\u0003\u000e\u0007\u0000!\u001d\u0001\u0000\u0000\u0000!\u001e"+
 		"\u0001\u0000\u0000\u0000!\u001f\u0001\u0000\u0000\u0000! \u0001\u0000"+
 		"\u0000\u0000\"\u0003\u0001\u0000\u0000\u0000#&\u0003\u0012\t\u0000$&\u0003"+
 		"\u0014\n\u0000%#\u0001\u0000\u0000\u0000%$\u0001\u0000\u0000\u0000&\u0005"+
@@ -935,7 +935,7 @@ public class JavardairParser extends Parser {
 		"\u0000<>\u0001\u0000\u0000\u0000=7\u0001\u0000\u0000\u0000=8\u0001\u0000"+
 		"\u0000\u0000=9\u0001\u0000\u0000\u0000>\r\u0001\u0000\u0000\u0000?@\u0005"+
 		"\u0001\u0000\u0000@A\u0003\n\u0005\u0000AB\u0005\u0012\u0000\u0000B\u000f"+
-		"\u0001\u0000\u0000\u0000CD\u0005\u0007\u0000\u0000DE\u0005\u0012\u0000"+
+		"\u0001\u0000\u0000\u0000CD\u0005\u0005\u0000\u0000DE\u0005\u0012\u0000"+
 		"\u0000E\u0011\u0001\u0000\u0000\u0000FG\u0005\u0002\u0000\u0000GH\u0003"+
 		"\u0016\u000b\u0000HJ\u0005\u000f\u0000\u0000IK\u0003\u0002\u0001\u0000"+
 		"JI\u0001\u0000\u0000\u0000KL\u0001\u0000\u0000\u0000LJ\u0001\u0000\u0000"+

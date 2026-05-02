@@ -16,7 +16,7 @@ public class JavardairLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, MUT=5, CONST=6, BREAK=7, VARIABLE=8, NUMBER=9, 
+		T__0=1, T__1=2, T__2=3, T__3=4, BREAK=5, MUT=6, CONST=7, VARIABLE=8, NUMBER=9, 
 		DIGIT=10, OPERATOR=11, EQUAL=12, OPENPARENTHESIS=13, CLOSEPARENTHESIS=14, 
 		OPENBRACKETS=15, CLOSEBRACKETS=16, COMMENT=17, SEPARATOR=18, WS=19;
 	public static String[] channelNames = {
@@ -29,7 +29,7 @@ public class JavardairLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"T__0", "T__1", "T__2", "T__3", "MUT", "CONST", "BREAK", "VARIABLE", 
+			"T__0", "T__1", "T__2", "T__3", "BREAK", "MUT", "CONST", "VARIABLE", 
 			"NUMBER", "DIGIT", "OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", 
 			"OPENBRACKETS", "CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
 		};
@@ -38,14 +38,14 @@ public class JavardairLexer extends Lexer {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'print'", "'if'", "'else'", "'while'", "'mut'", "'const'", "'break'", 
+			null, "'print'", "'if'", "'else'", "'while'", "'break'", "'mut'", "'const'", 
 			null, null, null, null, "':='", "'('", "')'", "'{'", "'}'", null, "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, "MUT", "CONST", "BREAK", "VARIABLE", "NUMBER", 
+			null, null, null, null, null, "BREAK", "MUT", "CONST", "VARIABLE", "NUMBER", 
 			"DIGIT", "OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", 
 			"OPENBRACKETS", "CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
 		};
@@ -119,7 +119,7 @@ public class JavardairLexer extends Lexer {
 		"\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002"+
 		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003"+
 		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005"+
+		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005"+
 		"\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006"+
 		"\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0004\u0007N\b\u0007"+
 		"\u000b\u0007\f\u0007O\u0003\u0007R\b\u0007\u0001\b\u0003\bU\b\b\u0001"+
@@ -146,7 +146,7 @@ public class JavardairLexer extends Lexer {
 		"\u0000\u0000\u0000\u0000!\u0001\u0000\u0000\u0000\u0000#\u0001\u0000\u0000"+
 		"\u0000\u0000%\u0001\u0000\u0000\u0000\u0001\'\u0001\u0000\u0000\u0000"+
 		"\u0003-\u0001\u0000\u0000\u0000\u00050\u0001\u0000\u0000\u0000\u00075"+
-		"\u0001\u0000\u0000\u0000\t;\u0001\u0000\u0000\u0000\u000b?\u0001\u0000"+
+		"\u0001\u0000\u0000\u0000\t;\u0001\u0000\u0000\u0000\u000bA\u0001\u0000"+
 		"\u0000\u0000\rE\u0001\u0000\u0000\u0000\u000fK\u0001\u0000\u0000\u0000"+
 		"\u0011T\u0001\u0000\u0000\u0000\u0013e\u0001\u0000\u0000\u0000\u0015r"+
 		"\u0001\u0000\u0000\u0000\u0017t\u0001\u0000\u0000\u0000\u0019w\u0001\u0000"+
@@ -159,11 +159,11 @@ public class JavardairLexer extends Lexer {
 		"12\u0005l\u0000\u000023\u0005s\u0000\u000034\u0005e\u0000\u00004\u0006"+
 		"\u0001\u0000\u0000\u000056\u0005w\u0000\u000067\u0005h\u0000\u000078\u0005"+
 		"i\u0000\u000089\u0005l\u0000\u00009:\u0005e\u0000\u0000:\b\u0001\u0000"+
-		"\u0000\u0000;<\u0005m\u0000\u0000<=\u0005u\u0000\u0000=>\u0005t\u0000"+
-		"\u0000>\n\u0001\u0000\u0000\u0000?@\u0005c\u0000\u0000@A\u0005o\u0000"+
-		"\u0000AB\u0005n\u0000\u0000BC\u0005s\u0000\u0000CD\u0005t\u0000\u0000"+
-		"D\f\u0001\u0000\u0000\u0000EF\u0005b\u0000\u0000FG\u0005r\u0000\u0000"+
-		"GH\u0005e\u0000\u0000HI\u0005a\u0000\u0000IJ\u0005k\u0000\u0000J\u000e"+
+		"\u0000\u0000;<\u0005b\u0000\u0000<=\u0005r\u0000\u0000=>\u0005e\u0000"+
+		"\u0000>?\u0005a\u0000\u0000?@\u0005k\u0000\u0000@\n\u0001\u0000\u0000"+
+		"\u0000AB\u0005m\u0000\u0000BC\u0005u\u0000\u0000CD\u0005t\u0000\u0000"+
+		"D\f\u0001\u0000\u0000\u0000EF\u0005c\u0000\u0000FG\u0005o\u0000\u0000"+
+		"GH\u0005n\u0000\u0000HI\u0005s\u0000\u0000IJ\u0005t\u0000\u0000J\u000e"+
 		"\u0001\u0000\u0000\u0000KQ\u0007\u0000\u0000\u0000LN\u0007\u0001\u0000"+
 		"\u0000ML\u0001\u0000\u0000\u0000NO\u0001\u0000\u0000\u0000OM\u0001\u0000"+
 		"\u0000\u0000OP\u0001\u0000\u0000\u0000PR\u0001\u0000\u0000\u0000QM\u0001"+

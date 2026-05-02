@@ -2,7 +2,7 @@ grammar Javardair;
 
 script: instruction+;
 
-instruction: /*function | */ controlstructure | assign | print | break;
+instruction: /*function | */break | controlstructure | assign | print;
 
 //function: 'function' VARIABLE OPENPARENTHESIS (VARIABLE (',' VARIABLE)*)? CLOSEPARENTHESIS OPENBRACKETS instruction+ CLOSEBRACKETS;
 
