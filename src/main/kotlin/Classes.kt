@@ -9,8 +9,8 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
         fun checkExpression(expression: Expression, lineIndex: Int) {
             when (expression) {
                 is Variable -> {
-                    if (!definedVariables.contains(expression.varId)) {
-                        errors.add(VarError(expression.varId, lineIndex))
+                    if (!definedVariables.contains(expression.variableName)) {
+                        errors.add(VarError(expression.variableName, lineIndex))
                     }
                 }
                 is BinaryExpression -> {
@@ -36,8 +36,8 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                 }
                 is Assign -> {
                     checkExpression(instruction.expression, lineIndex)
-                    if (!definedVariables.contains(instruction.varId)) {
-                        definedVariables.add(instruction.varId)
+                    if (!definedVariables.contains(instruction.variableName)) {
+                        definedVariables.add(instruction.variableName)
                     }
                 }
                 is Print -> {
@@ -152,9 +152,9 @@ data class Literal(val value: Int): Expression {
     }
 }
 
-data class Variable(val varId: String): Expression {
+data class Variable(val variableName: String): Expression {
     override fun toString(): String {
-        return varId
+        return variableName
     }
 }
 

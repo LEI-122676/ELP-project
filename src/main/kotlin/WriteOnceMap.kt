@@ -12,5 +12,7 @@ class WriteOnceMap<K, V> {
 
     fun toMap(): Map<K, V> = map.toMap()
 
-    fun contains(value: V) = map.containsValue(value)
+    fun containsKey(key: K) = map.containsKey(key)
+
+    fun containsValue(value: V) = map.containsValue(value)
 }
