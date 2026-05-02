@@ -1,7 +1,7 @@
 package org.example
 import java.io.File
 
-// engine.kt -f template.txt -i input.json -o result.txt
+// engine.kt -f src/test/testFiles/template1.html -i src/test/testFiles/input1.json -o src/test/testFiles/output1.html
 fun main(args: Array<String>) {
     if (args.isEmpty() || args.size != 6)
         throw IllegalArgumentException("Argumentos estão mal.\nExemplo: engine.kt -f template.txt -i input.json -o result.txt\n")
