@@ -16,7 +16,7 @@ public class JavardairLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, TYPE=6, VARIABLE=7, NUMBER=8, 
+		T__0=1, T__1=2, T__2=3, T__3=4, TYPE=5, BREAK=6, VARIABLE=7, NUMBER=8, 
 		DIGIT=9, OPERATOR=10, EQUAL=11, OPENPARENTHESIS=12, CLOSEPARENTHESIS=13, 
 		OPENBRACKETS=14, CLOSEBRACKETS=15, COMMENT=16, SEPARATOR=17, WS=18;
 	public static String[] channelNames = {
@@ -29,7 +29,7 @@ public class JavardairLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"T__0", "T__1", "T__2", "T__3", "T__4", "TYPE", "VARIABLE", "NUMBER", 
+			"T__0", "T__1", "T__2", "T__3", "TYPE", "BREAK", "VARIABLE", "NUMBER", 
 			"DIGIT", "OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", 
 			"OPENBRACKETS", "CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
 		};
@@ -38,16 +38,16 @@ public class JavardairLexer extends Lexer {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'print'", "'break'", "'if'", "'else'", "'while'", null, null, 
+			null, "'print'", "'if'", "'else'", "'while'", null, "'break'", null, 
 			null, null, null, "':='", "'('", "')'", "'{'", "'}'", null, "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, "TYPE", "VARIABLE", "NUMBER", "DIGIT", 
-			"OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", "OPENBRACKETS", 
-			"CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
+			null, null, null, null, null, "TYPE", "BREAK", "VARIABLE", "NUMBER", 
+			"DIGIT", "OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", 
+			"OPENBRACKETS", "CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -116,11 +116,11 @@ public class JavardairLexer extends Lexer {
 		"\u000b\u0007\u000b\u0002\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e"+
 		"\u0002\u000f\u0007\u000f\u0002\u0010\u0007\u0010\u0002\u0011\u0007\u0011"+
 		"\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000"+
-		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003"+
 		"\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005"+
-		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005H\b\u0005"+
+		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0003\u0004B\b\u0004"+
+		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005"+
 		"\u0001\u0006\u0001\u0006\u0004\u0006L\b\u0006\u000b\u0006\f\u0006M\u0003"+
 		"\u0006P\b\u0006\u0001\u0007\u0003\u0007S\b\u0007\u0001\u0007\u0001\u0007"+
 		"\u0005\u0007W\b\u0007\n\u0007\f\u0007Z\t\u0007\u0001\u0007\u0001\u0007"+
@@ -145,8 +145,8 @@ public class JavardairLexer extends Lexer {
 		"\u0000\u0000\u0000\u001b\u0001\u0000\u0000\u0000\u0000\u001d\u0001\u0000"+
 		"\u0000\u0000\u0000\u001f\u0001\u0000\u0000\u0000\u0000!\u0001\u0000\u0000"+
 		"\u0000\u0000#\u0001\u0000\u0000\u0000\u0001%\u0001\u0000\u0000\u0000\u0003"+
-		"+\u0001\u0000\u0000\u0000\u00051\u0001\u0000\u0000\u0000\u00074\u0001"+
-		"\u0000\u0000\u0000\t9\u0001\u0000\u0000\u0000\u000bG\u0001\u0000\u0000"+
+		"+\u0001\u0000\u0000\u0000\u0005.\u0001\u0000\u0000\u0000\u00073\u0001"+
+		"\u0000\u0000\u0000\tA\u0001\u0000\u0000\u0000\u000bC\u0001\u0000\u0000"+
 		"\u0000\rI\u0001\u0000\u0000\u0000\u000fR\u0001\u0000\u0000\u0000\u0011"+
 		"c\u0001\u0000\u0000\u0000\u0013p\u0001\u0000\u0000\u0000\u0015r\u0001"+
 		"\u0000\u0000\u0000\u0017u\u0001\u0000\u0000\u0000\u0019w\u0001\u0000\u0000"+
@@ -154,16 +154,16 @@ public class JavardairLexer extends Lexer {
 		"}\u0001\u0000\u0000\u0000!\u0086\u0001\u0000\u0000\u0000#\u0089\u0001"+
 		"\u0000\u0000\u0000%&\u0005p\u0000\u0000&\'\u0005r\u0000\u0000\'(\u0005"+
 		"i\u0000\u0000()\u0005n\u0000\u0000)*\u0005t\u0000\u0000*\u0002\u0001\u0000"+
-		"\u0000\u0000+,\u0005b\u0000\u0000,-\u0005r\u0000\u0000-.\u0005e\u0000"+
-		"\u0000./\u0005a\u0000\u0000/0\u0005k\u0000\u00000\u0004\u0001\u0000\u0000"+
-		"\u000012\u0005i\u0000\u000023\u0005f\u0000\u00003\u0006\u0001\u0000\u0000"+
-		"\u000045\u0005e\u0000\u000056\u0005l\u0000\u000067\u0005s\u0000\u0000"+
-		"78\u0005e\u0000\u00008\b\u0001\u0000\u0000\u00009:\u0005w\u0000\u0000"+
-		":;\u0005h\u0000\u0000;<\u0005i\u0000\u0000<=\u0005l\u0000\u0000=>\u0005"+
-		"e\u0000\u0000>\n\u0001\u0000\u0000\u0000?@\u0005m\u0000\u0000@A\u0005"+
-		"u\u0000\u0000AH\u0005t\u0000\u0000BC\u0005c\u0000\u0000CD\u0005o\u0000"+
-		"\u0000DE\u0005n\u0000\u0000EF\u0005s\u0000\u0000FH\u0005t\u0000\u0000"+
-		"G?\u0001\u0000\u0000\u0000GB\u0001\u0000\u0000\u0000H\f\u0001\u0000\u0000"+
+		"\u0000\u0000+,\u0005i\u0000\u0000,-\u0005f\u0000\u0000-\u0004\u0001\u0000"+
+		"\u0000\u0000./\u0005e\u0000\u0000/0\u0005l\u0000\u000001\u0005s\u0000"+
+		"\u000012\u0005e\u0000\u00002\u0006\u0001\u0000\u0000\u000034\u0005w\u0000"+
+		"\u000045\u0005h\u0000\u000056\u0005i\u0000\u000067\u0005l\u0000\u0000"+
+		"78\u0005e\u0000\u00008\b\u0001\u0000\u0000\u00009:\u0005m\u0000\u0000"+
+		":;\u0005u\u0000\u0000;B\u0005t\u0000\u0000<=\u0005c\u0000\u0000=>\u0005"+
+		"o\u0000\u0000>?\u0005n\u0000\u0000?@\u0005s\u0000\u0000@B\u0005t\u0000"+
+		"\u0000A9\u0001\u0000\u0000\u0000A<\u0001\u0000\u0000\u0000B\n\u0001\u0000"+
+		"\u0000\u0000CD\u0005b\u0000\u0000DE\u0005r\u0000\u0000EF\u0005e\u0000"+
+		"\u0000FG\u0005a\u0000\u0000GH\u0005k\u0000\u0000H\f\u0001\u0000\u0000"+
 		"\u0000IO\u0007\u0000\u0000\u0000JL\u0007\u0001\u0000\u0000KJ\u0001\u0000"+
 		"\u0000\u0000LM\u0001\u0000\u0000\u0000MK\u0001\u0000\u0000\u0000MN\u0001"+
 		"\u0000\u0000\u0000NP\u0001\u0000\u0000\u0000OK\u0001\u0000\u0000\u0000"+
@@ -196,7 +196,7 @@ public class JavardairLexer extends Lexer {
 		"\u0000\u0000\u0000\u008a\u008b\u0001\u0000\u0000\u0000\u008b\u0089\u0001"+
 		"\u0000\u0000\u0000\u008b\u008c\u0001\u0000\u0000\u0000\u008c\u008d\u0001"+
 		"\u0000\u0000\u0000\u008d\u008e\u0006\u0011\u0000\u0000\u008e$\u0001\u0000"+
-		"\u0000\u0000\u000b\u0000GMORX_ap\u0081\u008b\u0001\u0006\u0000\u0000";
+		"\u0000\u0000\u000b\u0000AMORX_ap\u0081\u008b\u0001\u0006\u0000\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
