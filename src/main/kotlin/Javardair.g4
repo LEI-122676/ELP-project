@@ -16,7 +16,7 @@ term: NUMBER | VARIABLE | OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 print: 'print' expression SEPARATOR;
 
-break: 'break' SEPARATOR;
+break: BREAK SEPARATOR;
 
 ifelse: 'if' guard OPENBRACKETS ifSequence=instruction+ CLOSEBRACKETS
         ('else' OPENBRACKETS elseSequence=instruction+ CLOSEBRACKETS)?;
@@ -26,6 +26,7 @@ guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 
 TYPE: 'mut' | 'const';
+BREAK : 'break';
 VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
 
 NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;

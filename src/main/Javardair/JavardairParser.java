@@ -1,4 +1,4 @@
-// Generated from /mnt/SharedData/documents/university/3-ano/2-sem/ELP/project/project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
+// Generated from C:/Users/patri/Desktop/ISCTE/ELP/ELP-project/src/main/kotlin/Javardair.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -16,9 +16,9 @@ public class JavardairParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, TYPE=6, VARIABLE=7, LITERAL=8, 
-		OPERATOR=9, EQUAL=10, OPENPARENTHESIS=11, CLOSEPARENTHESIS=12, OPENBRACKETS=13, 
-		CLOSEBRACKETS=14, COMMENT=15, SEPARATOR=16, WS=17;
+		T__0=1, T__1=2, T__2=3, T__3=4, TYPE=5, BREAK=6, VARIABLE=7, NUMBER=8, 
+		DIGIT=9, OPERATOR=10, EQUAL=11, OPENPARENTHESIS=12, CLOSEPARENTHESIS=13, 
+		OPENBRACKETS=14, CLOSEBRACKETS=15, COMMENT=16, SEPARATOR=17, WS=18;
 	public static final int
 		RULE_script = 0, RULE_instruction = 1, RULE_controlstructure = 2, RULE_assign = 3, 
 		RULE_expression = 4, RULE_term = 5, RULE_print = 6, RULE_break = 7, RULE_ifelse = 8, 
@@ -33,16 +33,16 @@ public class JavardairParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'print'", "'break'", "'if'", "'else'", "'while'", null, null, 
-			null, null, "':='", "'('", "')'", "'{'", "'}'", null, "';'"
+			null, "'print'", "'if'", "'else'", "'while'", null, "'break'", null, 
+			null, null, null, "':='", "'('", "')'", "'{'", "'}'", null, "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, "TYPE", "VARIABLE", "LITERAL", "OPERATOR", 
-			"EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", "OPENBRACKETS", "CLOSEBRACKETS", 
-			"COMMENT", "SEPARATOR", "WS"
+			null, null, null, null, null, "TYPE", "BREAK", "VARIABLE", "NUMBER", 
+			"DIGIT", "OPERATOR", "EQUAL", "OPENPARENTHESIS", "CLOSEPARENTHESIS", 
+			"OPENBRACKETS", "CLOSEBRACKETS", "COMMENT", "SEPARATOR", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -143,7 +143,7 @@ public class JavardairParser extends Parser {
 				setState(25); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 118L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -197,8 +197,8 @@ public class JavardairParser extends Parser {
 			setState(31);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__2:
-			case T__4:
+			case T__1:
+			case T__3:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(27);
@@ -219,7 +219,7 @@ public class JavardairParser extends Parser {
 				print();
 				}
 				break;
-			case T__1:
+			case BREAK:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(30);
@@ -275,14 +275,14 @@ public class JavardairParser extends Parser {
 			setState(35);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__2:
+			case T__1:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(33);
 				ifelse();
 				}
 				break;
-			case T__4:
+			case T__3:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(34);
@@ -432,7 +432,7 @@ public class JavardairParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class TermContext extends ParserRuleContext {
-		public TerminalNode LITERAL() { return getToken(JavardairParser.LITERAL, 0); }
+		public TerminalNode NUMBER() { return getToken(JavardairParser.NUMBER, 0); }
 		public TerminalNode VARIABLE() { return getToken(JavardairParser.VARIABLE, 0); }
 		public TerminalNode OPENPARENTHESIS() { return getToken(JavardairParser.OPENPARENTHESIS, 0); }
 		public ExpressionContext expression() {
@@ -465,11 +465,11 @@ public class JavardairParser extends Parser {
 			setState(57);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case LITERAL:
+			case NUMBER:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(51);
-				match(LITERAL);
+				match(NUMBER);
 				}
 				break;
 			case VARIABLE:
@@ -557,6 +557,7 @@ public class JavardairParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class BreakContext extends ParserRuleContext {
+		public TerminalNode BREAK() { return getToken(JavardairParser.BREAK, 0); }
 		public TerminalNode SEPARATOR() { return getToken(JavardairParser.SEPARATOR, 0); }
 		public BreakContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -584,7 +585,7 @@ public class JavardairParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(63);
-			match(T__1);
+			match(BREAK);
 			setState(64);
 			match(SEPARATOR);
 			}
@@ -648,7 +649,7 @@ public class JavardairParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(66);
-			match(T__2);
+			match(T__1);
 			setState(67);
 			guard();
 			setState(68);
@@ -666,16 +667,16 @@ public class JavardairParser extends Parser {
 				setState(72); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 118L) != 0) );
 			setState(74);
 			match(CLOSEBRACKETS);
 			setState(84);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__3) {
+			if (_la==T__2) {
 				{
 				setState(75);
-				match(T__3);
+				match(T__2);
 				setState(76);
 				match(OPENBRACKETS);
 				setState(78); 
@@ -691,7 +692,7 @@ public class JavardairParser extends Parser {
 					setState(80); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 118L) != 0) );
 				setState(82);
 				match(CLOSEBRACKETS);
 				}
@@ -751,7 +752,7 @@ public class JavardairParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(86);
-			match(T__4);
+			match(T__3);
 			setState(87);
 			guard();
 			setState(88);
@@ -769,7 +770,7 @@ public class JavardairParser extends Parser {
 				setState(92); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 110L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 118L) != 0) );
 			setState(94);
 			match(CLOSEBRACKETS);
 			}
@@ -837,7 +838,7 @@ public class JavardairParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0011e\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001\u0012e\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0001\u0000\u0004\u0000\u0018"+
@@ -866,31 +867,31 @@ public class JavardairParser extends Parser {
 		"\u001f\u001d\u0001\u0000\u0000\u0000\u001f\u001e\u0001\u0000\u0000\u0000"+
 		" \u0003\u0001\u0000\u0000\u0000!$\u0003\u0010\b\u0000\"$\u0003\u0012\t"+
 		"\u0000#!\u0001\u0000\u0000\u0000#\"\u0001\u0000\u0000\u0000$\u0005\u0001"+
-		"\u0000\u0000\u0000%&\u0005\u0006\u0000\u0000&\'\u0005\u0007\u0000\u0000"+
-		"\'(\u0005\n\u0000\u0000()\u0003\b\u0004\u0000)*\u0005\u0010\u0000\u0000"+
-		"*\u0007\u0001\u0000\u0000\u0000+0\u0003\n\u0005\u0000,-\u0005\t\u0000"+
-		"\u0000-/\u0003\n\u0005\u0000.,\u0001\u0000\u0000\u0000/2\u0001\u0000\u0000"+
-		"\u00000.\u0001\u0000\u0000\u000001\u0001\u0000\u0000\u00001\t\u0001\u0000"+
-		"\u0000\u000020\u0001\u0000\u0000\u00003:\u0005\b\u0000\u00004:\u0005\u0007"+
-		"\u0000\u000056\u0005\u000b\u0000\u000067\u0003\b\u0004\u000078\u0005\f"+
-		"\u0000\u00008:\u0001\u0000\u0000\u000093\u0001\u0000\u0000\u000094\u0001"+
+		"\u0000\u0000\u0000%&\u0005\u0005\u0000\u0000&\'\u0005\u0007\u0000\u0000"+
+		"\'(\u0005\u000b\u0000\u0000()\u0003\b\u0004\u0000)*\u0005\u0011\u0000"+
+		"\u0000*\u0007\u0001\u0000\u0000\u0000+0\u0003\n\u0005\u0000,-\u0005\n"+
+		"\u0000\u0000-/\u0003\n\u0005\u0000.,\u0001\u0000\u0000\u0000/2\u0001\u0000"+
+		"\u0000\u00000.\u0001\u0000\u0000\u000001\u0001\u0000\u0000\u00001\t\u0001"+
+		"\u0000\u0000\u000020\u0001\u0000\u0000\u00003:\u0005\b\u0000\u00004:\u0005"+
+		"\u0007\u0000\u000056\u0005\f\u0000\u000067\u0003\b\u0004\u000078\u0005"+
+		"\r\u0000\u00008:\u0001\u0000\u0000\u000093\u0001\u0000\u0000\u000094\u0001"+
 		"\u0000\u0000\u000095\u0001\u0000\u0000\u0000:\u000b\u0001\u0000\u0000"+
-		"\u0000;<\u0005\u0001\u0000\u0000<=\u0003\b\u0004\u0000=>\u0005\u0010\u0000"+
-		"\u0000>\r\u0001\u0000\u0000\u0000?@\u0005\u0002\u0000\u0000@A\u0005\u0010"+
-		"\u0000\u0000A\u000f\u0001\u0000\u0000\u0000BC\u0005\u0003\u0000\u0000"+
-		"CD\u0003\u0014\n\u0000DF\u0005\r\u0000\u0000EG\u0003\u0002\u0001\u0000"+
+		"\u0000;<\u0005\u0001\u0000\u0000<=\u0003\b\u0004\u0000=>\u0005\u0011\u0000"+
+		"\u0000>\r\u0001\u0000\u0000\u0000?@\u0005\u0006\u0000\u0000@A\u0005\u0011"+
+		"\u0000\u0000A\u000f\u0001\u0000\u0000\u0000BC\u0005\u0002\u0000\u0000"+
+		"CD\u0003\u0014\n\u0000DF\u0005\u000e\u0000\u0000EG\u0003\u0002\u0001\u0000"+
 		"FE\u0001\u0000\u0000\u0000GH\u0001\u0000\u0000\u0000HF\u0001\u0000\u0000"+
-		"\u0000HI\u0001\u0000\u0000\u0000IJ\u0001\u0000\u0000\u0000JT\u0005\u000e"+
-		"\u0000\u0000KL\u0005\u0004\u0000\u0000LN\u0005\r\u0000\u0000MO\u0003\u0002"+
-		"\u0001\u0000NM\u0001\u0000\u0000\u0000OP\u0001\u0000\u0000\u0000PN\u0001"+
-		"\u0000\u0000\u0000PQ\u0001\u0000\u0000\u0000QR\u0001\u0000\u0000\u0000"+
-		"RS\u0005\u000e\u0000\u0000SU\u0001\u0000\u0000\u0000TK\u0001\u0000\u0000"+
-		"\u0000TU\u0001\u0000\u0000\u0000U\u0011\u0001\u0000\u0000\u0000VW\u0005"+
-		"\u0005\u0000\u0000WX\u0003\u0014\n\u0000XZ\u0005\r\u0000\u0000Y[\u0003"+
-		"\u0002\u0001\u0000ZY\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000\u0000"+
-		"\\Z\u0001\u0000\u0000\u0000\\]\u0001\u0000\u0000\u0000]^\u0001\u0000\u0000"+
-		"\u0000^_\u0005\u000e\u0000\u0000_\u0013\u0001\u0000\u0000\u0000`a\u0005"+
-		"\u000b\u0000\u0000ab\u0003\b\u0004\u0000bc\u0005\f\u0000\u0000c\u0015"+
+		"\u0000HI\u0001\u0000\u0000\u0000IJ\u0001\u0000\u0000\u0000JT\u0005\u000f"+
+		"\u0000\u0000KL\u0005\u0003\u0000\u0000LN\u0005\u000e\u0000\u0000MO\u0003"+
+		"\u0002\u0001\u0000NM\u0001\u0000\u0000\u0000OP\u0001\u0000\u0000\u0000"+
+		"PN\u0001\u0000\u0000\u0000PQ\u0001\u0000\u0000\u0000QR\u0001\u0000\u0000"+
+		"\u0000RS\u0005\u000f\u0000\u0000SU\u0001\u0000\u0000\u0000TK\u0001\u0000"+
+		"\u0000\u0000TU\u0001\u0000\u0000\u0000U\u0011\u0001\u0000\u0000\u0000"+
+		"VW\u0005\u0004\u0000\u0000WX\u0003\u0014\n\u0000XZ\u0005\u000e\u0000\u0000"+
+		"Y[\u0003\u0002\u0001\u0000ZY\u0001\u0000\u0000\u0000[\\\u0001\u0000\u0000"+
+		"\u0000\\Z\u0001\u0000\u0000\u0000\\]\u0001\u0000\u0000\u0000]^\u0001\u0000"+
+		"\u0000\u0000^_\u0005\u000f\u0000\u0000_\u0013\u0001\u0000\u0000\u0000"+
+		"`a\u0005\f\u0000\u0000ab\u0003\b\u0004\u0000bc\u0005\r\u0000\u0000c\u0015"+
 		"\u0001\u0000\u0000\u0000\t\u0019\u001f#09HPT\\";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
