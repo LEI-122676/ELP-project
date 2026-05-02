@@ -34,6 +34,12 @@ public interface JavardairVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssign(JavardairParser.AssignContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link JavardairParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(JavardairParser.TypeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link JavardairParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

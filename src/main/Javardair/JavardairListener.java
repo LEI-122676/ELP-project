@@ -47,6 +47,16 @@ public interface JavardairListener extends ParseTreeListener {
 	 */
 	void exitAssign(JavardairParser.AssignContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link JavardairParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(JavardairParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link JavardairParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(JavardairParser.TypeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link JavardairParser#expression}.
 	 * @param ctx the parse tree
 	 */
