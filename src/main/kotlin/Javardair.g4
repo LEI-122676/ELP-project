@@ -26,11 +26,11 @@ while: 'while' guard OPENBRACKETS sequence=instruction+ CLOSEBRACKETS;
 
 guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
+BREAK : 'break';
 
 MUT: 'mut';
 CONST: 'const';
 
-BREAK : 'break';
 VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
 
 NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
