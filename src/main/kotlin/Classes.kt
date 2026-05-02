@@ -128,9 +128,9 @@ class Break: Instruction {
     }
 }
 
-data class Assign(val type: String, val varId: String, val expression: Expression): Instruction {
+data class Assign(val type: Type, val variableName: String, val expression: Expression): Instruction {
     override fun toString(): String {
-        return "$varId = $expression;"
+        return "$variableName = $expression;"
     }
 }
 
@@ -161,6 +161,19 @@ data class Variable(val varId: String): Expression {
 data class BinaryExpression(val left: Expression, val operator: Operator, val right: Expression): Expression {
     override fun toString(): String {
         return "$left $operator $right"
+    }
+}
+
+enum class Type {
+    MUTABLE {
+        override fun toString(): String {
+            return "mut"
+        }
+    },
+    CONSTANT {
+        override fun toString(): String {
+            return "const"
+        }
     }
 }
 

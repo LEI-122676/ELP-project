@@ -2,8 +2,8 @@ package org.example
 
 import JavardairParser
 
-fun JavardairParser.ScriptContext.toAST(): Script =
-    Script(instruction().map { it.toAST() }, emptyList())
+fun JavardairParser.ScriptContext.toAST(parameters: List<String> = emptyList()): Script =
+    Script(instruction().map { it.toAST() }, parameters)
 
 fun JavardairParser.InstructionContext.toAST(): Instruction =
     when {

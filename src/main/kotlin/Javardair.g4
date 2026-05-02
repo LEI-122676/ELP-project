@@ -8,7 +8,7 @@ instruction: /*function | */ controlstructure | assign | print | break;
 
 controlstructure: ifelse | while;
 
-assign: TYPE VARIABLE EQUAL expression SEPARATOR;
+assign: TYPE VARIABLE EQUAL expression SEPARATOR;   // mut nomeVariavel = 123;
 
 expression: term (OPERATOR term)*;
 
@@ -25,7 +25,10 @@ while: 'while' guard OPENBRACKETS sequence=instruction+ CLOSEBRACKETS;
 guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 
-TYPE: 'mut' | 'const';
+TYPE: MUT | CONST;
+MUT: 'mut';
+CONST: 'const';
+
 BREAK : 'break';
 VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
 
