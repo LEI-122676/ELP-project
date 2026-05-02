@@ -6,7 +6,7 @@ instruction: controlstructure | assign | print | break;
 
 controlstructure: ifelse | while;
 
-assign: VARIABLE ':=' expression SEPARATOR;
+assign: VARIABLE EQUAL expression SEPARATOR;
 
 expression: term (OPERATOR term)*;
 
@@ -26,21 +26,9 @@ guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 LITERAL: [0-9]+;
 VARIABLE: [A-Za-z]+;
 
-OPERATOR: PLUS | MINUS | TIMES | DIVISION | MODULE | EQUALSTO | DIFFERENT | LESSTHEN | LESSOREQUALTO | GREATERTHEN | GREATEROREQUALTO;
+OPERATOR: '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '<=' | '>' | '>=';
 
-EQUAL: '=';
-PLUS: '+';
-MINUS: '-';
-TIMES: '*';
-DIVISION: '/';
-MODULE: '%';
-
-EQUALSTO: '==';
-DIFFERENT: '!=';
-LESSTHEN: '<';
-LESSOREQUALTO: '<=';
-GREATERTHEN: '>';
-GREATEROREQUALTO: '>=';
+EQUAL: ':=';
 
 OPENPARENTHESIS: '(';
 CLOSEPARENTHESIS: ')';
