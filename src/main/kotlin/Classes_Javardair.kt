@@ -135,8 +135,8 @@ data class Assign(val type: Type, val variableName: String, val expression: Expr
 }
 
 data class Print(val expression: Expression): Instruction {
-    fun print() {
-        println(toString())
+    fun print(outputBuilder: StringBuilder, interpreter: Interpreter) {
+        outputBuilder.append(interpreter.calc(expression).toString())
     }
 
     override fun toString(): String {
