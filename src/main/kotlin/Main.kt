@@ -12,30 +12,72 @@ fun main(args: Array<String>) {
 
 
     val templateFile = args.get(args.indexOf("-f") + 1)
-    val inputFile = args.get(args.indexOf("-i") + 1)
+    val inputJSONFile = args.get(args.indexOf("-i") + 1)
     val outputFile = args.get(args.indexOf("-o") + 1)
 
 
     val template = File(templateFile).readText()
     println("TEMPLATE:\n$template\n")
 
-    val input = File(inputFile).readText()
-    println("INPUT:\n$input\n")
+    val input = File(inputJSONFile).readText()
+    println("INPUT JSON:\n$input\n")
 
-    val codeStr = "mut b := 6 == 2;if (a < b) {print(1);}while (a == 1) {print(a);}"
-    val parameters = listOf("a")
+    // FASE 2: CONSTRUÇÃO DO CONTEXTO DE DADOS
+    // (O JSONVisitor será o responsável por converter a árvore num Map)
+    // Para já preenchemos a estrutura "mockada" de parâmetros de input conforme as regras
+    val globalContextParams = mutableListOf<Pair<String, Int>>()
+    // (Aqui invocarias val jsonMap = JSONVisitor().visit(parser.json()) e transformavas num formato nativo)
 
-    val lexer = JavardairLexer(CharStreams.fromString(codeStr))
-    val parser = JavardairParser(CommonTokenStream(lexer))
-    val astScript = parser.script().toAST(parameters)
-    Interpreter(astScript).run(listOf("a" to 2))
+    // Fallback de parse JSON simples / context:
+    globalContextParams.add("a" to 2)
 
-    //TODO
-    /*
-    val output: String = Convert(inputFile)
-    println("OUTPUT:\n$output")
+    // FASE 3: ANÁLISE DO TEMPLATE (Template Separator)
+    val fragmentRegex = Regex("""\{\{(.*?)\}\}""", RegexOption.DOT_MATCHES_ALL)
 
-    File(outputFile).writeText(output)
+    val staticParts = template.split(fragmentRegex)
+    val scriptMatches = fragmentRegex.findAll(template).toList()
+
+    // FASE 5: EXECUÇÃO E RENDERIZAÇÃO
+    // Inicializar o StringBuilder
+    val outputBuilder = StringBuilder()
+
+    // Inicializar e configurar a memória base do interpreter
+    val dummyScript = Script(emptyList(), emptyList())
+    val interpreter = Interpreter(dummyScript)
+
+    // Injetar contexto global (JSON input)
+    globalContextParams.forEach { (key, value) ->
+        interpreter.addConst(key, value)
+    }
+
+    // Processamento intercalado dos fragmentos
+    for (i in staticParts.indices) {
+        // Acrescentar Texto Estático
+        outputBuilder.append(staticParts[i])
+
+        // Acrescentar e Executar Bloco de Script (se existir)
+        if (i < scriptMatches.size) {
+            val scriptCode = scriptMatches[i].groupValues[1]
+
+            // FASE 4: PARSING DOS SCRIPTS
+            val scriptLexer = JavardairLexer(CharStreams.fromString(scriptCode))
+            val scriptParser = JavardairParser(CommonTokenStream(scriptLexer))
+
+            try {
+                val astScript = scriptParser.script().toAST(globalContextParams.map { it.first })
+
+                // Mudar o script atual do interpreter e prosseguir com as instruções
+                interpreter.runScript(astScript, outputBuilder)
+            } catch (e: Exception) {
+                System.err.println("Erro ao processar bloco: $scriptCode -> ${e.message}")
+            }
+        }
+    }
+
+    // FASE 6: ESCRITA DO RESULTADO FINAL
+    val finalOutput = outputBuilder.toString()
+    File(outputFile).writeText(finalOutput)
+    println("OUTPUT GERADO EM: $outputFile")
+    println(finalOutput)
     println("DONE!")
-     */
 }

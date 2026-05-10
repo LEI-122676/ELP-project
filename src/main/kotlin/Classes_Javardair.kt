@@ -78,7 +78,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
             val str = instruction.toString()
             when (instruction) {
                 is ControlStructure -> str  // While and IfElse already handle their own formatting
-                else -> "$str"  // Add semicolon to simple instructions
+                else -> str  // Add semicolon to simple instructions
             }
         }.joinToString("\n")
         return formattedInstructions
@@ -103,9 +103,9 @@ data class IfElse(override val guard: Expression,
                   val alternative: List<Instruction>? = null): ControlStructure {
     override fun toString(): String {
         val seqStr = sequence.joinToString("\n\t")
-        val result = "if ($guard) {\n\t$seqStr\n}"
+        val result = "if($guard) {\n\t$seqStr\n}"
 
-        return if (alternative != null && alternative.isNotEmpty()) {
+        return if (!alternative.isNullOrEmpty()) {
             val altStr = alternative.joinToString("\n\t")
             "$result else {\n\t$altStr\n}"
         } else {
@@ -118,7 +118,7 @@ data class While(override val guard: Expression,
                  override val sequence: List<Instruction>): ControlStructure {
     override fun toString(): String {
         val seqStr = sequence.joinToString("\n\t")
-        return "while ($guard) {\n\t$seqStr\n}"
+        return "while($guard) {\n\t$seqStr\n}"
     }
 }
 
@@ -130,7 +130,7 @@ class Break: Instruction {
 
 data class Assign(val type: Type, val variableName: String, val expression: Expression): Instruction {
     override fun toString(): String {
-        return "$variableName = $expression;"
+        return "$variableName := $expression;"
     }
 }
 
@@ -140,7 +140,7 @@ data class Print(val expression: Expression): Instruction {
     }
 
     override fun toString(): String {
-        return "print $expression;"
+        return "print($expression);"
     }
 }
 

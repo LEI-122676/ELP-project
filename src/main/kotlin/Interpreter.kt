@@ -2,9 +2,54 @@ package org.example
 
 import WriteOnceMap
 
-class Interpreter(val script: Script) {
+class Interpreter(var script: Script) {
     private val mutMemory = mutableMapOf<String, Int>()
     private val constMemory = WriteOnceMap<String, Int>()
+
+    fun addConst(name: String, value: Int) {
+        if(!constMemory.containsKey(name)) {
+            constMemory.put(name, value)
+        }
+    }
+
+    fun runScript(newScript: Script, outputBuilder: StringBuilder) {
+        this.script = newScript
+
+        if (script.validate().isNotEmpty()) {
+            println("Erro de validação no script.")
+            return
+        }
+
+        runInstructions(script.instructions, outputBuilder)
+    }
+
+    private fun runInstructions(instructions: List<Instruction>, outputBuilder: StringBuilder) {
+        instructions.forEach {
+            if (it is Assign){
+                // Checkar se variável já existe em memória
+                if (mutMemory.containsKey(it.variableName) || constMemory.containsKey(it.variableName))
+                    println("Variável já existe em memória.")
+
+                if (it.type == Type.CONSTANT)
+                    constMemory.put(it.variableName, calc(it.expression))
+
+                else if (it.type == Type.MUTABLE)
+                    mutMemory[it.variableName] = calc(it.expression)
+
+                else
+                    println("Tipo de variável não reconhecido.")
+            }
+            else if (it is Print) {
+                it.print(outputBuilder, this)
+            }
+            else if (it is Break) {
+                // TODO...
+            }
+            else if (it is ControlStructure) {
+                // TODO...
+            }
+        }
+    }
 
     fun run(param: List<Pair<String, Int>>) {
         if (!script.validate().isEmpty()) return
