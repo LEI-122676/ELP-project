@@ -123,7 +123,7 @@ data class Assign(val type: Type, val variableName: String, val expression: Expr
 
 data class Print(val expression: Expression): Instruction {
     fun print(outputBuilder: StringBuilder, interpreter: Interpreter) {
-        outputBuilder.append(interpreter.calc(expression).toString())
+        outputBuilder.append(interpreter.calc(expression).toString()).append("\n")
     }
 
     override fun toString(): String {
