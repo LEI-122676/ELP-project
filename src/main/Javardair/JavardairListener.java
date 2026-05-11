@@ -107,15 +107,15 @@ public interface JavardairListener extends ParseTreeListener {
 	 */
 	void exitIfelse(JavardairParser.IfelseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavardairParser#while}.
+	 * Enter a parse tree produced by {@link JavardairParser#forloop}.
 	 * @param ctx the parse tree
 	 */
-	void enterWhile(JavardairParser.WhileContext ctx);
+	void enterForloop(JavardairParser.ForloopContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link JavardairParser#while}.
+	 * Exit a parse tree produced by {@link JavardairParser#forloop}.
 	 * @param ctx the parse tree
 	 */
-	void exitWhile(JavardairParser.WhileContext ctx);
+	void exitForloop(JavardairParser.ForloopContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link JavardairParser#guard}.
 	 * @param ctx the parse tree

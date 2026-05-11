@@ -1,5 +1,5 @@
 
-const a := valor_a.         ### 'valor_a' é 5
+const a := valor_a.                          ### 'valor_a' = 5
 mut b := 6 == 2.
 
 if (a < b) << print(1). >>
@@ -9,10 +9,11 @@ else <<
 >>
 
 
-const iteravel := valores_array.
 
-for (element >>> iteravel) <<               ### Não há whiles
-    const extracted := iteravel..element.
+const colecao := objeto_json..valores_array.
+
+for (element >>> colecao) <<                 ### Não há whiles :(
+    const extracted := colecao..element.
 
     if (extracted > 5) <<
         break.

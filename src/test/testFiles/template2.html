@@ -1,22 +1,28 @@
 <html>
 <h1>
 {{
-    const a := valor_a.         # 'valor_a' é 5
+    const a := valor_a.                          ### 'valor_a' = 5
     mut b := 6 == 2.
 
     if (a < b) << print(1). >>
     else <<
-        const text := "O 'a' é maior ou igual ao 'b'."
+        const text := "O 'a' é maior" + " ou igual ao 'b'".
         print(text).
     >>
 }}
 </h1>
 <h2>
 {{
-    const iteravel := valores_array
+    const colecao := objeto_json..valores_array.
 
-    for (element >>> iteravel) <<
-        print(iteravel.element).
+    for (element >>> colecao) <<                 ### Não há whiles :(
+        const extracted := colecao..element.
+
+        if (extracted > 5) <<
+            break.
+        >>
+
+        print("Valor extraído: " + extracted).
     >>
 }}
 </h2>

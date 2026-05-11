@@ -136,13 +136,13 @@ public class JavardairBaseListener implements JavardairListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhile(JavardairParser.WhileContext ctx) { }
+	@Override public void enterForloop(JavardairParser.ForloopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhile(JavardairParser.WhileContext ctx) { }
+	@Override public void exitForloop(JavardairParser.ForloopContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
