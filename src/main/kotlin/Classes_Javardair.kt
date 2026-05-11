@@ -124,13 +124,13 @@ data class While(override val guard: Expression,
 
 class Break: Instruction {
     override fun toString(): String {
-        return "break;"
+        return "break."
     }
 }
 
 data class Assign(val type: Type, val variableName: String, val expression: Expression): Instruction {
     override fun toString(): String {
-        return "$variableName := $expression;"
+        return "$variableName := $expression."
     }
 }
 
@@ -140,7 +140,7 @@ data class Print(val expression: Expression): Instruction {
     }
 
     override fun toString(): String {
-        return "print($expression);"
+        return "print($expression)."
     }
 }
 

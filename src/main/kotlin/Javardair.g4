@@ -46,5 +46,5 @@ OPENBRACKETS: '{';
 CLOSEBRACKETS: '}';
 
 COMMENT: '#' ~[\r\n]* -> skip;
-SEPARATOR: ';';
+SEPARATOR: '.';
 WS: [ \t\r\n]+ -> skip;
