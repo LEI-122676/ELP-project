@@ -2,11 +2,10 @@ grammar Javardair;
 
 script: instruction+;
 
-instruction: /*function | */break | controlstructure | assign | print;
+instruction: break | controlstructure | assign | print;
 
-//function: 'function' VARIABLE OPENPARENTHESIS (VARIABLE (',' VARIABLE)*)? CLOSEPARENTHESIS OPENBRACKETS instruction+ CLOSEBRACKETS;
 
-controlstructure: ifelse | while;
+controlstructure: ifelse | forloop;
 
 assign: type VARIABLE EQUAL expression SEPARATOR;   // mut nomeVariavel = 123;
 
@@ -14,15 +13,15 @@ type: MUT | CONST;
 
 expression: term (OPERATOR term)*;
 
-term: NUMBER | VARIABLE | OPENPARENTHESIS expression CLOSEPARENTHESIS;
+term: NUMBER | STRING | VARIABLE (ACCESS VARIABLE)* | OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 print: 'print' expression SEPARATOR;
 
 break: BREAK SEPARATOR;
 
-ifelse: 'if' guard OPENBRACKETS ifSequence=instruction+ CLOSEBRACKETS
-        ('else' OPENBRACKETS elseSequence=instruction+ CLOSEBRACKETS)?;
-while: 'while' guard OPENBRACKETS sequence=instruction+ CLOSEBRACKETS;
+ifelse: 'if' guard OPENBLOCK ifSequence=instruction+ CLOSEBLOCK
+        ('else' OPENBLOCK elseSequence=instruction+ CLOSEBLOCK)?;
+forloop: 'for' OPENPARENTHESIS VARIABLE IN expression CLOSEPARENTHESIS OPENBLOCK sequence=instruction+ CLOSEBLOCK;
 
 guard: OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
@@ -30,8 +29,10 @@ BREAK : 'break';
 
 MUT: 'mut';
 CONST: 'const';
+IN: '>>>';
 
 VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
+STRING: '"' ~["]* '"';
 
 NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
 DIGIT: [0-9];
@@ -42,9 +43,10 @@ EQUAL: ':=';
 
 OPENPARENTHESIS: '(';
 CLOSEPARENTHESIS: ')';
-OPENBRACKETS: '{';
-CLOSEBRACKETS: '}';
+OPENBLOCK: '<<';
+CLOSEBLOCK: '>>';
 
-COMMENT: '#' ~[\r\n]* -> skip;
+ACCESS: '..';
+COMMENT: '###' ~[\r\n]* -> skip;
 SEPARATOR: '.';
 WS: [ \t\r\n]+ -> skip;

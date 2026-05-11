@@ -1,15 +1,22 @@
 
-# exemplo lindo
-
-const a := 5.
+const a := valor_a.         ### 'valor_a' é 5
 mut b := 6 == 2.
-const iteravel := [1,2,3,4,5,6,7,8,9,10]
 
-if (a < b) <
-    print(1).
->
+if (a < b) << print(1). >>
+else <<
+    const text := "O 'a' é maior" + " ou igual ao 'b'".
+    print(text).
+>>
 
-while (a == 1) <
-    print(a).
->
 
+const iteravel := valores_array.
+
+for (element >>> iteravel) <<               ### Não há whiles
+    const extracted := iteravel..element.
+
+    if (extracted > 5) <<
+        break.
+    >>
+
+    print("Valor extraído: " + extracted).
+>>

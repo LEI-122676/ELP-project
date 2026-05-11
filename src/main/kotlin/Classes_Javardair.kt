@@ -103,11 +103,11 @@ data class IfElse(override val guard: Expression,
                   val alternative: List<Instruction>? = null): ControlStructure {
     override fun toString(): String {
         val seqStr = sequence.joinToString("\n\t")
-        val result = "if($guard) {\n\t$seqStr\n}"
+        val result = "if($guard) <<\n\t$seqStr\n>>"
 
         return if (!alternative.isNullOrEmpty()) {
             val altStr = alternative.joinToString("\n\t")
-            "$result else {\n\t$altStr\n}"
+            "$result else <<\n\t$altStr\n>>"
         } else {
             result
         }
@@ -118,7 +118,7 @@ data class While(override val guard: Expression,
                  override val sequence: List<Instruction>): ControlStructure {
     override fun toString(): String {
         val seqStr = sequence.joinToString("\n\t")
-        return "while($guard) {\n\t$seqStr\n}"
+        return "while($guard) <<\n\t$seqStr\n>>"
     }
 }
 
