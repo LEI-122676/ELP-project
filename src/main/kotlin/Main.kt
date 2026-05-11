@@ -35,11 +35,42 @@ fun main(args: Array<String>) {
  * FASE 2: Parsing de JSON para obter os argumentos/Variáveis globais
  */
 private fun buildGlobalContext(jsonString: String): Map<String, Any?> {
-    return mapOf(
-        "hello" to "olá",
-        "world" to "mundo",
-        "a" to 2
-    )
+    val lexer = JSONLexer(CharStreams.fromString(jsonString))
+    val parser = JSONParser(CommonTokenStream(lexer))
+    // Iniciamos no 'value' de topo
+    val jsonAst = parser.jvalue()
+
+    val result = visitJSONValue(jsonAst)
+    return if (result is Map<*, *>) {
+        result as Map<String, Any?>
+    } else {
+        emptyMap()
+    }
+}
+
+// Funções de Visita simples adaptadas para o JSONParser gerado em Java
+private fun visitJSONValue(ctx: JSONParser.JvalueContext): Any? {
+    if (ctx.jobject() != null) return visitJSONObject(ctx.jobject())
+    if (ctx.jarray() != null) return visitJSONArray(ctx.jarray())
+    if (ctx.JSTRING() != null) return ctx.JSTRING().text.removeSurrounding("\"")
+    if (ctx.jnumber() != null) return ctx.jnumber().text.toIntOrNull() ?: ctx.jnumber().text.toDoubleOrNull()
+    if (ctx.text == "true") return true
+    if (ctx.text == "false") return false
+    return null
+}
+
+private fun visitJSONObject(ctx: JSONParser.JobjectContext): Map<String, Any?> {
+    val map = mutableMapOf<String, Any?>()
+    for (pairCtx in ctx.jfield()) {
+        val key = pairCtx.JSTRING().text.removeSurrounding("\"")
+        val value = visitJSONValue(pairCtx.jvalue())
+        map[key] = value
+    }
+    return map
+}
+
+private fun visitJSONArray(ctx: JSONParser.JarrayContext): List<Any?> {
+    return ctx.jvalue().map { visitJSONValue(it) }
 }
 
 /**

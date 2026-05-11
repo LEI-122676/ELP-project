@@ -28,12 +28,21 @@ class Interpreter(var script: Script) {
     private fun runInstructions(instructions: List<Instruction>, outputBuilder: StringBuilder) {
         for (it in instructions) {
             if (it is Assign){
-                if (it.type == Type.CONSTANT)
+                if (it.type == Type.CONSTANT) {
+                    if (constMemory.containsKey(it.variableName)) {
+                        throw RuntimeException("Key '${it.variableName}' is already defined and cannot be updated.")
+                    }
                     constMemory.put(it.variableName, calc(it.expression))
-                else if (it.type == Type.MUTABLE)
+                }
+                else if (it.type == Type.MUTABLE) {
+                    if (constMemory.containsKey(it.variableName)) {
+                        throw RuntimeException("Erro: Tentativa de redeclarar '${it.variableName}' como mutável, mas já existe como constante!")
+                    }
                     mutMemory[it.variableName] = calc(it.expression)
-                else
+                }
+                else {
                     println("Tipo de variável não reconhecido.")
+                }
             }
             else if (it is Print) {
                 it.print(outputBuilder, this)
@@ -61,10 +70,32 @@ class Interpreter(var script: Script) {
 
                 for (key in keysToIterate) {
                     mutMemory[it.loopVariable] = key
+                    // Create an isolated scope for the body of the loop
+                    val scopeConstants = mutableListOf<String>()
+                    val scopeMutables = mutableListOf<String>()
+
                     try {
+                        for (innerIt in it.sequence) {
+                            if (innerIt is Assign) {
+                                if (innerIt.type == Type.CONSTANT && !constMemory.containsKey(innerIt.variableName)) {
+                                    scopeConstants.add(innerIt.variableName)
+                                } else if (innerIt.type == Type.MUTABLE && !mutMemory.containsKey(innerIt.variableName)) {
+                                    scopeMutables.add(innerIt.variableName)
+                                }
+                            }
+                        }
+
                         runInstructions(it.sequence, outputBuilder)
                     } catch (e: BreakException) {
                         break
+                    } finally {
+                        // Clean up the isolated scope allocations for the current iteration
+                        scopeConstants.forEach { constVar ->
+                            // Em Kotlin Map "WriteOnceMap", teríamos de o recriar ou usar reflexão para limpar.
+                            // Como workaround e correção completa:
+                            constMemory.remove(constVar)
+                        }
+                        scopeMutables.forEach { mutVar -> mutMemory.remove(mutVar) }
                     }
                 }
             }

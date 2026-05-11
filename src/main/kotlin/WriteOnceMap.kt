@@ -1,18 +1,17 @@
-class WriteOnceMap<K, V> {
-    private val map = mutableMapOf<K, V>()
+import java.io.File
 
-    fun put(key: K, value: V) {
-        if (map.containsKey(key)) {
-            throw IllegalStateException("Key '$key' is already defined and cannot be updated.")
+class WriteOnceMap<K, V> : HashMap<K, V>() {
+    override fun put(key: K, value: V): V? {
+        if (containsKey(key)) {
+            throw RuntimeException("Key '$key' is already defined and cannot be updated.")
         }
-        map[key] = value
+        return super.put(key, value)
     }
 
-    fun get(key: K): V? = map[key]
+    override fun get(key: K): V? = super.get(key)
 
-    fun toMap(): Map<K, V> = map.toMap()
+    // Adicionado public remove para o Local Scoping suportar purgar variaveis entre for-loops no Interpreter.
+    override fun remove(key: K): V? = super.remove(key)
 
-    fun containsKey(key: K) = map.containsKey(key)
-
-    fun containsValue(value: V) = map.containsValue(value)
+    fun toMap(): Map<K, V> = super.entries.associate { it.key to it.value }
 }
