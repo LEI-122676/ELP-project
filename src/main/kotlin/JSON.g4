@@ -1,15 +1,24 @@
 grammar JSON;
 
-value: object | array | STRING | NUMBER | 'true' | 'false' | 'null';
+jvalue:  jarray | JSTRING | jnumber | JBOOLEAN | JNULL | jobject;
 
-object: '{' (pair (COMMA pair)*)? '}';
-array: '[' (value (COMMA value)*)? ']';
-pair: STRING ':' value;
+jfield: JSTRING ':' jvalue;
 
-STRING: '"' ~["]* '"';
+jarray: '[' (jvalue (COMMA jvalue)*)? ']';
 
-NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
+jobject: '{' (jfield (COMMA jfield)*)? '}';
+
+jnumber: DOUBLE | INT;
+
+
+JSTRING: '"' ~["]* '"';
+
+INT: '-'? [1-9] DIGIT*;
+DOUBLE: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
 DIGIT: [0-9];
+
+JBOOLEAN: 'true' | 'false';
+JNULL: 'null';
 
 COMMA: ',';
 WHITESPACE: [ \r\n\t]+ -> skip;

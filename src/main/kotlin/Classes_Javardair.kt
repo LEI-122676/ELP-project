@@ -9,8 +9,9 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
         fun checkExpression(expression: Expression, lineIndex: Int) {
             when (expression) {
                 is Variable -> {
-                    if (!definedVariables.contains(expression.variableName)) {
-                        errors.add(VarError(expression.variableName, lineIndex))
+                    // Check against the first part of the path, as it holds the base variable name
+                    if (expression.path.isEmpty() || !definedVariables.contains(expression.path.first())) {
+                        errors.add(VarError(expression.path.firstOrNull() ?: "Unknown", lineIndex))
                     }
                 }
                 is BinaryExpression -> {
@@ -18,6 +19,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                     checkExpression(expression.right, lineIndex)
                 }
                 is Literal -> {}
+                is StringLiteral -> {}
             }
         }
 
@@ -27,7 +29,10 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                 is ControlStructure -> {
                     if(isEntering) {
                         if(instruction.sequence.isEmpty()) {
-                            errors.add(VarError("if", lineIndex))
+                            errors.add(VarError("Empty inner block for: ${instruction.javaClass.simpleName}", lineIndex))
+                        }
+                        if (instruction is ForLoop && !definedVariables.contains(instruction.loopVariable)) {
+                            definedVariables.add(instruction.loopVariable)
                         }
                         scopeStack.addLast(instruction)
                     } else {
@@ -44,30 +49,12 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                     checkExpression(instruction.expression, lineIndex)
                 }
                 is Break -> {
-                    if (scopeStack.none { it is While }) {
-                        errors.add(VarError("'break' fora de 'while'", lineIndex))
+                    if (scopeStack.none { it is ForLoop }) {
+                        errors.add(VarError("'break' fora de 'for loop'", lineIndex))
                     }
                 }
             }
             lineIndex++
-        }
-
-        instructions.forEachIndexed { lineIndex, instruction ->
-            when (instruction) {
-                is ControlStructure -> {
-                    checkExpression(instruction.guard, lineIndex)
-
-                }
-                is Assign -> {
-
-                }
-                is Print -> {
-                    checkExpression(instruction.expression, lineIndex)
-                }
-                is Break -> {
-                    // TODO - verificar se está dentro de ciclo?
-                }
-            }
         }
 
         return errors
@@ -78,7 +65,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
             val str = instruction.toString()
             when (instruction) {
                 is ControlStructure -> str  // While and IfElse already handle their own formatting
-                else -> "$str"  // Add semicolon to simple instructions
+                else -> str  // Add semicolon to simple instructions
             }
         }.joinToString("\n")
         return formattedInstructions
@@ -94,53 +81,53 @@ data class VarError(val varId: String, val line: Int) {
 sealed interface Instruction
 
 sealed interface ControlStructure: Instruction {
-    val guard: Expression                                               // == condition
     val sequence: List<Instruction>
 }
 
-data class IfElse(override val guard: Expression,
+data class IfElse(val guard: Expression,
                   override val sequence: List<Instruction>,
                   val alternative: List<Instruction>? = null): ControlStructure {
     override fun toString(): String {
         val seqStr = sequence.joinToString("\n\t")
-        val result = "if ($guard) {\n\t$seqStr\n}"
+        val result = "if($guard) <<\n\t$seqStr\n>>"
 
-        return if (alternative != null && alternative.isNotEmpty()) {
+        return if (!alternative.isNullOrEmpty()) {
             val altStr = alternative.joinToString("\n\t")
-            "$result else {\n\t$altStr\n}"
+            "$result else <<\n\t$altStr\n>>"
         } else {
             result
         }
     }
 }
 
-data class While(override val guard: Expression,
-                 override val sequence: List<Instruction>): ControlStructure {
+data class ForLoop(val loopVariable: String,
+                   val iterable: Expression,
+                   override val sequence: List<Instruction>): ControlStructure {
     override fun toString(): String {
         val seqStr = sequence.joinToString("\n\t")
-        return "while ($guard) {\n\t$seqStr\n}"
+        return "for ($loopVariable >>> $iterable) <<\n\t$seqStr\n>>"
     }
 }
 
 class Break: Instruction {
     override fun toString(): String {
-        return "break;"
+        return "break."
     }
 }
 
 data class Assign(val type: Type, val variableName: String, val expression: Expression): Instruction {
     override fun toString(): String {
-        return "$variableName = $expression;"
+        return "$variableName := $expression."
     }
 }
 
 data class Print(val expression: Expression): Instruction {
-    fun print() {
-        println(toString())
+    fun print(outputBuilder: StringBuilder, interpreter: Interpreter) {
+        outputBuilder.append(interpreter.calc(expression).toString())
     }
 
     override fun toString(): String {
-        return "print $expression;"
+        return "print($expression)."
     }
 }
 
@@ -152,9 +139,15 @@ data class Literal(val value: Int): Expression {
     }
 }
 
-data class Variable(val variableName: String): Expression {
+data class StringLiteral(val value: String): Expression {
     override fun toString(): String {
-        return variableName
+        return value
+    }
+}
+
+data class Variable(val path: List<String>): Expression {
+    override fun toString(): String {
+        return path.joinToString("..")
     }
 }
 

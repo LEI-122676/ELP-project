@@ -70,11 +70,11 @@ public interface JavardairVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIfelse(JavardairParser.IfelseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link JavardairParser#while}.
+	 * Visit a parse tree produced by {@link JavardairParser#forloop}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhile(JavardairParser.WhileContext ctx);
+	T visitForloop(JavardairParser.ForloopContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link JavardairParser#guard}.
 	 * @param ctx the parse tree

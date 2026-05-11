@@ -1,12 +1,23 @@
-const a := 5;
-mut b := 6 == 2;
 
-if (a < b) {
-    print(1);
-}
+const a := valor_a.                          ### 'valor_a' = 5
+mut b := 6 == 2.
 
-while (a == 1) {
-    print(a);
-}
+if (a < b) << print(1). >>
+else <<
+    const text := "O 'a' é maior" + " ou igual ao 'b'".
+    print(text).
+>>
 
-# function foo(a,b,c) {}
+
+
+const colecao := objeto_json..valores_array.
+
+for (element >>> colecao) <<                 ### Não há whiles :(
+    const extracted := colecao..element.
+
+    if (extracted > 5) <<
+        break.
+    >>
+
+    print("Valor extraído: " + extracted).
+>>

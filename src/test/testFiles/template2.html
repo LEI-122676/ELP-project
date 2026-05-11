@@ -1,0 +1,16 @@
+<html>
+    <header> Bem-vindo à loja: {{ print(nome_loja). }} </header>
+    <body>
+        <p>A loja está aberta {{ print(dias_abertos). }} dias por semana!</p>
+
+        <h3>Lista de Funcionários:</h3>
+        <ul>
+{{
+            for (func >>> funcionarios) <<
+                const funcName := funcionarios..func.
+                print("<li>" + funcName + "</li>").
+            >>
+}}
+        </ul>
+    </body>
+</html>

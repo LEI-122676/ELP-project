@@ -17,7 +17,7 @@ fun JavardairParser.InstructionContext.toAST(): Instruction =
 fun JavardairParser.ControlstructureContext.toAST(): Instruction =
     when {
         ifelse() != null -> ifelse().toAST()
-        while_() != null -> while_().toAST()
+        forloop() != null -> forloop().toAST()
         else -> throw IllegalStateException("Unknown control structure type")
     }
 
@@ -26,9 +26,9 @@ fun JavardairParser.AssignContext.toAST(): Assign =
 
 fun JavardairParser.TypeContext.toAST(): Type =
     when (this.text) {
-        "MUTABLE" -> Type.MUTABLE
-        "CONSTANT" -> Type.CONSTANT
-        else -> throw IllegalArgumentException("Unknown type: $this")
+        "mut" -> Type.MUTABLE
+        "const" -> Type.CONSTANT
+        else -> throw IllegalArgumentException("Unknown type: ${this.text}")
     }
 
 fun JavardairParser.ExpressionContext.toAST(): Expression {
@@ -51,7 +51,8 @@ fun JavardairParser.ExpressionContext.toAST(): Expression {
 fun JavardairParser.TermContext.toAST(): Expression =
     when {
         NUMBER() != null -> Literal(NUMBER().text.toInt())
-        VARIABLE() != null -> Variable(VARIABLE().text)
+        STRING() != null -> StringLiteral(STRING().text.removeSurrounding("\""))
+        VARIABLE().isNotEmpty() -> Variable(VARIABLE().map { it.text })
         expression() != null -> expression().toAST()
         else -> throw IllegalStateException("Unknown term type")
     }
@@ -64,26 +65,24 @@ fun JavardairParser.BreakContext.toAST(): Break =
 
 fun JavardairParser.IfelseContext.toAST(): IfElse {
     val guard = guard().toAST()
-    val allInstructions = instruction()
-    val hasElse = CLOSEBRACKETS().size > 1
+    val seq = mutableListOf<Instruction>()
+    val alt = mutableListOf<Instruction>()
 
-    val sequence: List<Instruction>
-    val alternative: List<Instruction>?
-    
-    if (hasElse && elseSequence != null) {
-        val ifEndIndex = allInstructions.indexOf(ifSequence)
-        sequence = allInstructions.take(ifEndIndex + 1).map { it.toAST() }
-        alternative = allInstructions.drop(ifEndIndex + 1).map { it.toAST() }
-    } else {
-        sequence = allInstructions.map { it.toAST() }
-        alternative = null
+    val firstCloseBlockIndex = CLOSEBLOCK(0).symbol.tokenIndex
+
+    for (inst in instruction()) {
+        if (inst.start.tokenIndex > firstCloseBlockIndex) {
+            alt.add(inst.toAST())
+        } else {
+            seq.add(inst.toAST())
+        }
     }
 
-    return IfElse(guard, sequence, alternative)
+    return IfElse(guard, seq, alt.takeIf { it.isNotEmpty() })
 }
 
-fun JavardairParser.WhileContext.toAST(): While =
-    While(guard().toAST(), instruction().map { it.toAST() })
+fun JavardairParser.ForloopContext.toAST(): ForLoop =
+    ForLoop(VARIABLE().text, expression().toAST(), instruction().map { it.toAST() })
 
 fun JavardairParser.GuardContext.toAST(): Expression =
     expression().toAST()
