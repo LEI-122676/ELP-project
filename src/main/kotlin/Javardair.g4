@@ -2,12 +2,12 @@ grammar Javardair;
 
 script: instruction+;
 
-instruction: break | controlstructure | assign | print;
-
+instruction: break | controlstructure | assign | compoundassign | print;
 
 controlstructure: ifelse | forloop;
 
 assign: type VARIABLE EQUAL expression SEPARATOR;   // mut nomeVariavel = 123;
+compoundassign: VARIABLE COMPOUNDOP expression SEPARATOR;
 
 type: MUT | CONST;
 
@@ -38,7 +38,7 @@ NUMBER: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
 DIGIT: [0-9];
 
 OPERATOR: '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '<=' | '>' | '>=';
-
+COMPOUNDOP: '+=' | '-=' | '*=' | '/=' | '%=';
 EQUAL: ':=';
 
 OPENPARENTHESIS: '(';
