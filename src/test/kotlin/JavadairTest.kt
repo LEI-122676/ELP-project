@@ -10,15 +10,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-/**
- * Testes JUnit para a Template Engine Javardair.
- *
- * Organização:
- *  1. Testes Unitários ao Interpretador (ASTs construídas manualmente)
- *  2. Testes de Parsing (código Javardair → AST via ANTLR)
- *  3. Testes de Integração (renderTemplate end-to-end)
- *  4. Testes de Erros / Validação
- */
+
 class JavardairTest {
 
     // ─────────────────────────────────────────────────────────────
