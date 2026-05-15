@@ -9,6 +9,7 @@ fun JavardairParser.InstructionContext.toAST(): Instruction =
     when {
         controlstructure() != null -> controlstructure().toAST()
         assign() != null -> assign().toAST()
+        compoundassign() != null -> compoundassign().toAST()
         print() != null -> print().toAST()
         break_() != null -> break_().toAST()
         else -> throw IllegalStateException("Unknown instruction type")
@@ -23,6 +24,18 @@ fun JavardairParser.ControlstructureContext.toAST(): Instruction =
 
 fun JavardairParser.AssignContext.toAST(): Assign =
     Assign(type().toAST(), VARIABLE().text, expression().toAST())
+
+fun JavardairParser.CompoundassignContext.toAST(): CompoundAssign {
+    val op = when (COMPOUNDOP().text) {
+        "+=" -> Operator.PLUS
+        "-=" -> Operator.MINUS
+        "*=" -> Operator.TIMES
+        "/=" -> Operator.DIVISION
+        "%=" -> Operator.MODULE
+        else -> throw IllegalArgumentException("Operador composto desconhecido: ${COMPOUNDOP().text}")
+    }
+    return CompoundAssign(VARIABLE().text, op, expression().toAST())
+}
 
 fun JavardairParser.TypeContext.toAST(): Type =
     when (this.text) {

@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.3.10"
+    antlr
 }
 
 group = "org.example"
@@ -11,7 +12,13 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.antlr:antlr4:4.13.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    
+    // ANTLR
+    implementation("org.antlr:antlr4-runtime:4.13.2")
+    antlr("org.antlr:antlr4:4.13.2")
 }
 
 sourceSets {
@@ -19,16 +26,23 @@ sourceSets {
         java {
             srcDir("src/main/Javardair")
             srcDir("src/main/JSON")
-
-
+        }
+        kotlin {
+            srcDir("src/main/kotlin")
         }
     }
 }
 
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(21)
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks {
+    generateGrammarSource {
+        maxHeapSize = "128m"
+    }
+    
+    test {
+        useJUnitPlatform()
+    }
 }

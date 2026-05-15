@@ -53,7 +53,9 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                         errors.add(VarError("'break' fora de 'for loop'", lineIndex))
                     }
                 }
+                else -> { /* TODO adicionar compound assign  */ }
             }
+
             lineIndex++
         }
 
@@ -119,6 +121,13 @@ data class Assign(val type: Type, val variableName: String, val expression: Expr
     override fun toString(): String {
         return "$variableName := $expression."
     }
+}
+data class CompoundAssign(
+    val variableName: String,
+    val operator: Operator,
+    val expression: Expression
+) : Instruction {
+    override fun toString() = "$variableName ${operator}= $expression."
 }
 
 data class Print(val expression: Expression): Instruction {
