@@ -55,6 +55,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                 }
                 else -> { /* TODO adicionar compound assign  */ }
             }
+
             lineIndex++
         }
 
