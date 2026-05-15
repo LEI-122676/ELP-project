@@ -7,6 +7,7 @@ instruction: break | controlstructure | assign | compoundassign | print;
 controlstructure: ifelse | forloop;
 
 assign: type VARIABLE EQUAL expression SEPARATOR;   // mut nomeVariavel = 123;
+
 compoundassign: VARIABLE COMPOUNDOP expression SEPARATOR;
 
 type: MUT | CONST;

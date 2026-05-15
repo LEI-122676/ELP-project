@@ -45,9 +45,6 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                         definedVariables.add(instruction.variableName)
                     }
                 }
-                is CompoundAssign -> {
-                    print("para completar")
-                }
                 is Print -> {
                     checkExpression(instruction.expression, lineIndex)
                 }
@@ -56,6 +53,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                         errors.add(VarError("'break' fora de 'for loop'", lineIndex))
                     }
                 }
+                else -> { /* TODO adicionar compound assign  */ }
             }
             lineIndex++
         }
