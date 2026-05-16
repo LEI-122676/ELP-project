@@ -281,6 +281,62 @@ class JavardairTest {
         assertEquals("", sb.toString().trim())
     }
 
+    @Test fun `ifelse - guard verdadeira baseada em variavel alocada`() {
+        val script = Script(
+            listOf(
+                Assign(Type.MUTABLE, "idade", Literal(18)),
+                IfElse(
+                    BinaryExpression(Variable(listOf("idade")), Operator.GREATEROREQUALTO, Literal(18)),
+                    listOf(Print(StringLiteral("maior"))),
+                    listOf(Print(StringLiteral("menor")))
+                )
+            ),
+            emptyList()
+        )
+        val interp = Interpreter(script)
+        val sb = StringBuilder()
+        interp.runScript(script, sb)
+        assertEquals("maior", sb.toString().trim())
+    }
+
+    @Test fun `ifelse - guard que verifica objectos aninhados resolve corretamente`() {
+        val interp = emptyInterpreter()
+        interp.addConst("cfg", mapOf("flags" to mapOf("ativo" to 1)))
+        val script = Script(
+            listOf(
+                IfElse(
+                    BinaryExpression(Variable(listOf("cfg", "flags", "ativo")), Operator.EQUALSTO, Literal(1)),
+                    listOf(Print(StringLiteral("on")))
+                )
+            ),
+            listOf("cfg")
+        )
+        val sb = StringBuilder()
+        interp.runScript(script, sb)
+        assertEquals("on", sb.toString().trim())
+    }
+
+    @Test fun `ifelse aninhados validam escopos internos corretamente`() {
+        val script = Script(
+            listOf(
+                IfElse(
+                    BinaryExpression(Literal(1), Operator.EQUALSTO, Literal(1)),
+                    listOf(
+                        IfElse(
+                            BinaryExpression(Literal(5), Operator.LESSTHEN, Literal(10)),
+                            listOf(Print(StringLiteral("interior")))
+                        )
+                    )
+                )
+            ),
+            emptyList()
+        )
+        val interp = Interpreter(script)
+        val sb = StringBuilder()
+        interp.runScript(script, sb)
+        assertEquals("interior", sb.toString().trim())
+    }
+
     // ── 1.8 ForLoop ──────────────────────────────────────────────
 
     @Test fun `forloop - itera lista`() {
@@ -346,39 +402,93 @@ class JavardairTest {
         assertEquals("0", sb.toString().trim())
     }
 
+    @Test fun `forloop - scoping de variaveis criadas localmente nao polui espaco global apos o for`() {
+        val interp = emptyInterpreter()
+        interp.addConst("lista", listOf(1, 2))
+
+        val script = Script(
+            listOf(
+                ForLoop(
+                    "i",
+                    Variable(listOf("lista")),
+                    listOf(
+                        Assign(Type.CONSTANT, "temp", Literal(42)),
+                        Print(Variable(listOf("temp")))
+                    )
+                )
+            ),
+            listOf("lista") // Valida que 'temp' nas instruções morre após execução do loop scope
+        )
+        val sb = StringBuilder()
+        interp.runScript(script, sb)
+        assertEquals("42\n42", sb.toString().trim())
+
+        // Confirmar que temp já não se encontra na Engine ConstMemory
+        assertThrows<RuntimeException> {
+            interp.calc(Variable(listOf("temp")))
+        }
+    }
+
+    @Test fun `forloop - tentar avaliar colecao inexistente explode`() {
+        val script = Script(
+            listOf(
+                ForLoop(
+                    "item",
+                    Variable(listOf("arr_indefinido")),
+                    listOf(Print(Literal(1)))
+                )
+            ),
+            emptyList()
+        )
+        val interp = Interpreter(script)
+        // O validate já vai travar mas assumindo que passava o eval também lança RunTime.
+        // O Script validador vai explodir e retornar os erros via RuntimeException
+        assertThrows<RuntimeException> {
+            interp.runScript(script, StringBuilder())
+        }
+    }
+
     // ═════════════════════════════════════════════════════════════
     // 2. TESTES DE PARSING (ANTLR → AST)
     // ═════════════════════════════════════════════════════════════
 
     @Test fun `parsing - print de numero`() {
         assertEquals("42", runCode("print (42)."))
+        assertEquals("42", runCode("print (42)."))
     }
 
     @Test fun `parsing - print de string`() {
+        assertEquals("ola", runCode("""print ("ola")."""))
         assertEquals("ola", runCode("""print ("ola")."""))
     }
 
     @Test fun `parsing - assign mut e print`() {
         assertEquals("10", runCode("mut x := 10.\nprint (x)."))
+        assertEquals("10", runCode("mut x := 10.\nprint (x)."))
     }
 
     @Test fun `parsing - assign const e print`() {
+        assertEquals("5", runCode("const c := 5.\nprint (c)."))
         assertEquals("5", runCode("const c := 5.\nprint (c)."))
     }
 
     @Test fun `parsing - expressao aritmetica simples`() {
         assertEquals("9", runCode("print (4 + 5)."))
+        assertEquals("9", runCode("print (4 + 5)."))
     }
 
     @Test fun `parsing - expressao com variavel`() {
         assertEquals("7", runCode("mut a := 3.\nprint (a + 4)."))
+        assertEquals("7", runCode("mut a := 3.\nprint (a + 4)."))
     }
 
     @Test fun `parsing - if verdadeiro`() {
-        assertEquals("ok", runCode("""if (1 == 1) << print "ok". >>"""))
+        assertEquals("ok", runCode("""if (1 == 1) << print ("ok"). >>"""))
+        assertEquals("ok", runCode("""if (1 == 1) << print ("ok"). >>"""))
     }
 
     @Test fun `parsing - if falso com else`() {
+        assertEquals("nao", runCode("""if (1 == 2) << print ("sim"). >> else << print ("nao"). >>"""))
         assertEquals("nao", runCode("""if (1 == 2) << print ("sim"). >> else << print ("nao"). >>"""))
     }
 
@@ -386,8 +496,7 @@ class JavardairTest {
         val output = runCode(
             "for (i >>> items) << print (i). >>",
             params = listOf("items"),
-            context = mapOf("items" to listOf("x", "y", "z"))
-        )
+            context = mapOf("items" to listOf("x", "y", "z")))
         // O for itera sobre os índices 0,1,2
         assertEquals("0\n1\n2", output)
     }
@@ -396,8 +505,7 @@ class JavardairTest {
         val output = runCode(
             "print (dados..nome).",
             params = listOf("dados"),
-            context = mapOf("dados" to mapOf("nome" to "Ana"))
-        )
+            context = mapOf("dados" to mapOf("nome" to "Ana")))
         assertEquals("Ana", output)
     }
 
@@ -405,22 +513,23 @@ class JavardairTest {
         assertEquals("menor", runCode("""
             mut a := 3.
             if (a < 5) <<
-                print "menor".
+                print ("menor").
             >> else <<
-                print "maior".
+                print ("maior").
             >>
         """.trimIndent()))
     }
 
     @Test fun `parsing - comentario e ignorado`() {
-        assertEquals("42", runCode("### isto é um comentário\nprint 42."))
+        assertEquals("42", runCode("### isto é um comentário\nprint (42)."))
+        assertEquals("42", runCode("### isto é um comentário\nprint (42)."))
     }
 
     @Test fun `parsing - multiplos prints`() {
         val out = runCode("""
-            print 1.
-            print 2.
-            print 3.
+            print (1).
+            print (2).
+            print (3).
         """.trimIndent())
         assertEquals("1\n2\n3", out)
     }
@@ -440,7 +549,7 @@ class JavardairTest {
         }
 
         exec("mut contador := 10.", emptyList())
-        val out = exec("print contador.", listOf("contador"))
+        val out = exec("print (contador).", listOf("contador"))
         assertEquals("10", out)
     }
 
@@ -449,14 +558,14 @@ class JavardairTest {
     // ═════════════════════════════════════════════════════════════
 
     @Test fun `integracao - substituicao simples de variavel`() {
-        val template = "<h1>{{ print nome. }}</h1>"
+        val template = "<h1>{{ print (nome). }}</h1>"
         val json     = """{"nome": "Javardair"}"""
         val output   = renderTemplate(template, json)
         assertEquals("<h1>Javardair\n</h1>", output)
     }
 
     @Test fun `integracao - multiplas substituicoes`() {
-        val template = "{{ print saudacao. }} {{ print alvo. }}"
+        val template = "{{ print (saudacao). }} {{ print (alvo). }}"
         val json     = """{"saudacao": "Olá", "alvo": "mundo"}"""
         val output   = renderTemplate(template, json)
         assertEquals("Olá\n mundo\n", output)
@@ -472,7 +581,7 @@ class JavardairTest {
     }
 
     @Test fun `integracao - for loop sobre array JSON`() {
-        val template = """{{ for (i >>> frutas) << print i. >> }}"""
+        val template = """{{ for (i >>> frutas) << print (i). >> }}"""
         val json     = """{"frutas": ["maca", "pera", "uva"]}"""
         val output   = renderTemplate(template, json)
         // Itera sobre índices 0,1,2
@@ -480,13 +589,13 @@ class JavardairTest {
     }
 
     @Test fun `integracao - acesso a subpropriedade JSON`() {
-        val template = """{{ print pessoa..cidade. }}"""
+        val template = """{{ print (pessoa..cidade). }}"""
         val json     = """{"pessoa": {"cidade": "Lisboa"}}"""
         assertEquals("Lisboa\n", renderTemplate(template, json))
     }
 
     @Test fun `integracao - conteudo estatico preservado`() {
-        val template = "<html>\n{{ print titulo. }}\n</html>"
+        val template = "<html>\n{{ print (titulo). }}\n</html>"
         val json     = """{"titulo": "Bem-vindo"}"""
         val output   = renderTemplate(template, json)
         assertTrue(output.contains("<html>"))

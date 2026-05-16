@@ -76,7 +76,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
 
 data class VarError(val varId: String, val line: Int) {
     override fun toString(): String {
-        return "On line $line --- problem with: $varId"
+        return "Na linha $line --- problema com: $varId"
     }
 }
 

@@ -24,10 +24,10 @@ class Interpreter(var script: Script) {
         val paramScope = (script.parameters + getAliveVariables()).distinct()
         val scriptParaValidar = Script(script.instructions, paramScope)
 
-        if (scriptParaValidar.validate().isNotEmpty()) {
-            val erros = scriptParaValidar.validate().joinToString("\n")
-            println("Erro de validação no script:\n$erros")
-            return
+        val errosValidacao = scriptParaValidar.validate()
+        if (errosValidacao.isNotEmpty()) {
+            val erros = errosValidacao.joinToString("\n")
+            throw RuntimeException("Falha na Validação do Script Javardair:\n$erros")
         }
 
         runInstructions(script.instructions, outputBuilder)
@@ -53,35 +53,6 @@ class Interpreter(var script: Script) {
                 else {
                     println("Tipo de variável não reconhecido.")
                 }
-
-//           } else if (it is CompoundAssign){
-//                    // Só variáveis mutáveis podem usar compound assign
-//                    if (constMemory.containsKey(it.variableName)) {
-//                        throw RuntimeException("Erro: '${it.variableName}' é constante, não pode usar operador composto!")
-//                    }
-//                    val current = mutMemory[it.variableName]
-//                        ?: throw RuntimeException("Erro: '${it.variableName}' não está definida!")
-//
-//                    val right   = calc(it.expression)
-//
-//                    // Concatenação de strings com +=
-//                    if (it.operator == Operator.PLUS && (current is String || right is String)) {
-//                        mutMemory[it.variableName] = current.toString() + right.toString()
-//                        continue
-//                    }
-//
-//                    val leftInt  = current.toString().toIntOrNull() ?: 0
-//                    val rightInt = right?.toString()?.toIntOrNull() ?: 0
-//
-//                    mutMemory[it.variableName] = when (it.operator) {
-//                        Operator.PLUS     -> leftInt + rightInt
-//                        Operator.MINUS    -> leftInt - rightInt
-//                        Operator.TIMES    -> leftInt * rightInt
-//                        Operator.DIVISION -> if (rightInt != 0) leftInt / rightInt else throw RuntimeException("Divisão por zero!")
-//                        Operator.MODULE   -> if (rightInt != 0) leftInt % rightInt else throw RuntimeException("Divisão por zero!")
-//                        else              -> throw RuntimeException("Operador inválido para compoundassign!")
-//                    }
-
             }
             else if (it is Print) {
                 it.print(outputBuilder, this)
