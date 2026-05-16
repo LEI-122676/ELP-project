@@ -13,7 +13,7 @@ jnumber: DOUBLE | INT;
 
 JSTRING: '"' ~["]* '"';
 
-INT: '-'? [1-9] DIGIT*;
+INT: '0' | '-'? [1-9] DIGIT*;
 DOUBLE: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
 DIGIT: [0-9];
 

@@ -16,7 +16,7 @@ expression: term (OPERATOR term)*;
 
 term: NUMBER | STRING | VARIABLE (ACCESS VARIABLE)* | OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
-print: 'print' expression SEPARATOR;
+print: 'print' OPENPARENTHESIS expression CLOSEPARENTHESIS SEPARATOR;
 
 break: BREAK SEPARATOR;
 

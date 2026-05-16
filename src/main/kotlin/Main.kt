@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
 /**
  * FASE 2: Parsing de JSON para obter os argumentos/Variáveis globais
  */
-private fun buildGlobalContext(jsonString: String): Map<String, Any?> {
+fun buildGlobalContext(jsonString: String): Map<String, Any?> {
     val lexer = JSONLexer(CharStreams.fromString(jsonString))
     val parser = JSONParser(CommonTokenStream(lexer))
     // Iniciamos no 'value' de topo
@@ -76,7 +76,7 @@ private fun visitJSONArray(ctx: JSONParser.JarrayContext): List<Any?> {
 /**
  * FASE 3 a 5: Renderização onde é processado os Templates Estáticos VS Blocos de Script
  */
-private fun renderTemplate(template: String, globalContext: Map<String, Any?>): String {
+fun renderTemplate(template: String, globalContext: Map<String, Any?>): String {
     val fragmentRegex = Regex("""\{\{(.*?)\}\}""", RegexOption.DOT_MATCHES_ALL)
     
     val staticParts = template.split(fragmentRegex)
@@ -92,9 +92,6 @@ private fun renderTemplate(template: String, globalContext: Map<String, Any?>): 
         interpreter.addConst(key, value)
     }
 
-    // Listar o nome das variaveis do contexto global a serem injetadas dentro da AST do próprio Javardair
-    val definedVariableNames = globalContext.keys.toList()
-
     for (i in staticParts.indices) {
         // Parte Normal Estática
         outputBuilder.append(staticParts[i])
@@ -102,6 +99,7 @@ private fun renderTemplate(template: String, globalContext: Map<String, Any?>): 
         // Parse e Eval de blocos Script Javardair se existirem
         if (i < scriptMatches.size) {
             val scriptCode = scriptMatches[i].groupValues[1]
+            val definedVariableNames = interpreter.getAliveVariables()
             executeJavardairScript(scriptCode, definedVariableNames, interpreter, outputBuilder)
         }
     }
