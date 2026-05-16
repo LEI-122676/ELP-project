@@ -44,52 +44,11 @@ class JavardairTest {
      * mas inline para os testes.
      */
     private fun renderTemplate(template: String, jsonInput: String): String {
-        val lexer  = JSONLexer(CharStreams.fromString(jsonInput))
-        val parser = JSONParser(CommonTokenStream(lexer))
-        val ctx    = parser.jvalue()
+        // Aproveita o contexto JSON que já tens criado em Main.kt
+        val globalContext = buildGlobalContext(jsonInput)
 
-        // Parse JSON → Map
-        fun visitVal(c: JSONParser.JvalueContext): Any? {
-            if (c.jobject() != null) {
-                val map = mutableMapOf<String, Any?>()
-                for (f in c.jobject().jfield()) {
-                    map[f.JSTRING().text.removeSurrounding("\"")] = visitVal(f.jvalue())
-                }
-                return map
-            }
-            if (c.jarray() != null) return c.jarray().jvalue().map { visitVal(it) }
-            if (c.JSTRING() != null) return c.JSTRING().text.removeSurrounding("\"")
-            if (c.jnumber() != null) return c.jnumber().text.toIntOrNull() ?: c.jnumber().text.toDoubleOrNull()
-            if (c.text == "true") return true
-            if (c.text == "false") return false
-            return null
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        val globalContext = visitVal(ctx) as? Map<String, Any?> ?: emptyMap()
-
-        val fragmentRegex = Regex("""\{\{(.*?)\}\}""", RegexOption.DOT_MATCHES_ALL)
-        val staticParts   = template.split(fragmentRegex)
-        val scriptMatches = fragmentRegex.findAll(template).toList()
-
-        val interp = emptyInterpreter()
-        globalContext.forEach { (k, v) -> interp.addConst(k, v) }
-        val defined = globalContext.keys.toList()
-
-        val out = StringBuilder()
-        for (i in staticParts.indices) {
-            out.append(staticParts[i])
-            if (i < scriptMatches.size) {
-                val code = scriptMatches[i].groupValues[1]
-                try {
-                    val sLexer  = JavardairLexer(CharStreams.fromString(code))
-                    val sParser = JavardairParser(CommonTokenStream(sLexer))
-                    val ast     = sParser.script().toAST(defined)
-                    interp.runScript(ast, out)
-                } catch (e: Exception) { /* ignorado nos testes */ }
-            }
-        }
-        return out.toString()
+        // Renderiza e devolve o template (que também já existe em Main.kt)
+        return renderTemplate(template, globalContext)
     }
 
     // INTERPRETADOR
@@ -392,27 +351,27 @@ class JavardairTest {
     // ═════════════════════════════════════════════════════════════
 
     @Test fun `parsing - print de numero`() {
-        assertEquals("42", runCode("print 42."))
+        assertEquals("42", runCode("print (42)."))
     }
 
     @Test fun `parsing - print de string`() {
-        assertEquals("ola", runCode("""print "ola"."""))
+        assertEquals("ola", runCode("""print ("ola")."""))
     }
 
     @Test fun `parsing - assign mut e print`() {
-        assertEquals("10", runCode("mut x := 10.\nprint x."))
+        assertEquals("10", runCode("mut x := 10.\nprint (x)."))
     }
 
     @Test fun `parsing - assign const e print`() {
-        assertEquals("5", runCode("const c := 5.\nprint c."))
+        assertEquals("5", runCode("const c := 5.\nprint (c)."))
     }
 
     @Test fun `parsing - expressao aritmetica simples`() {
-        assertEquals("9", runCode("print 4 + 5."))
+        assertEquals("9", runCode("print (4 + 5)."))
     }
 
     @Test fun `parsing - expressao com variavel`() {
-        assertEquals("7", runCode("mut a := 3.\nprint a + 4."))
+        assertEquals("7", runCode("mut a := 3.\nprint (a + 4)."))
     }
 
     @Test fun `parsing - if verdadeiro`() {
@@ -420,12 +379,12 @@ class JavardairTest {
     }
 
     @Test fun `parsing - if falso com else`() {
-        assertEquals("nao", runCode("""if (1 == 2) << print "sim". >> else << print "nao". >>"""))
+        assertEquals("nao", runCode("""if (1 == 2) << print ("sim"). >> else << print ("nao"). >>"""))
     }
 
     @Test fun `parsing - for loop com lista injetada`() {
         val output = runCode(
-            "for (i >>> items) << print i. >>",
+            "for (i >>> items) << print (i). >>",
             params = listOf("items"),
             context = mapOf("items" to listOf("x", "y", "z"))
         )
@@ -435,7 +394,7 @@ class JavardairTest {
 
     @Test fun `parsing - acesso a propriedade de mapa`() {
         val output = runCode(
-            "print dados..nome.",
+            "print (dados..nome).",
             params = listOf("dados"),
             context = mapOf("dados" to mapOf("nome" to "Ana"))
         )
@@ -504,9 +463,12 @@ class JavardairTest {
     }
 
     @Test fun `integracao - condicional com propriedade JSON`() {
-        val template = """{{ if (ativo == 1) << print "ligado". >> else << print "desligado". >> }}"""
-        assertEquals("ligado\n",    renderTemplate(template, """{"ativo": 1}"""))
-        assertEquals("desligado\n", renderTemplate(template, """{"ativo": 0}"""))
+        val template = """{{ if (ativo == 1) << print("ligado"). >> else << print("desligado"). >> }}"""
+        val json1 = """{"ativo": 1}"""
+        val json2 = """{"ativo": 0}"""
+
+        assertEquals("ligado\n",    renderTemplate(template, json1))
+        assertEquals("desligado\n", renderTemplate(template, json2))
     }
 
     @Test fun `integracao - for loop sobre array JSON`() {
@@ -533,14 +495,14 @@ class JavardairTest {
     }
 
     @Test fun `integracao - variavel declarada em bloco persistente noutro bloco`() {
-        val template = "{{ mut cnt := 5. }}{{ print cnt. }}"
+        val template = "{{ const cnt := 5. }}{{ print (cnt). }}"
         val json     = """{}"""
         val output   = renderTemplate(template, json)
         assertEquals("5\n", output)
     }
 
     @Test fun `integracao - aritmetica no template`() {
-        val template = """{{ print base + 10. }}"""
+        val template = """{{ print (base + 10). }}"""
         val json     = """{"base": 5}"""
         val output   = renderTemplate(template, json)
         assertEquals("15\n", output)

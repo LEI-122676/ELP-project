@@ -12,11 +12,21 @@ class Interpreter(var script: Script) {
         }
     }
 
+    // Retorna todos os nomes de variaveis injetadas e locais atualmente em memoria
+    fun getAliveVariables(): List<String> {
+        return mutMemory.keys.toList() + constMemory.keys.toList()
+    }
+
     fun runScript(newScript: Script, outputBuilder: StringBuilder) {
         this.script = newScript
 
-        if (script.validate().isNotEmpty()) {
-            println("Erro de validação no script.")
+        // Injeta o que a memoria já conhecia para dentro da lista do scope do novo bloco
+        val paramScope = (script.parameters + getAliveVariables()).distinct()
+        val scriptParaValidar = Script(script.instructions, paramScope)
+
+        if (scriptParaValidar.validate().isNotEmpty()) {
+            val erros = scriptParaValidar.validate().joinToString("\n")
+            println("Erro de validação no script:\n$erros")
             return
         }
 
