@@ -64,18 +64,6 @@ public class JavardairBaseListener implements JavardairListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCompoundassign(JavardairParser.CompoundassignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCompoundassign(JavardairParser.CompoundassignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterType(JavardairParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}

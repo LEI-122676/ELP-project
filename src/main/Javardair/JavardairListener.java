@@ -47,16 +47,6 @@ public interface JavardairListener extends ParseTreeListener {
 	 */
 	void exitAssign(JavardairParser.AssignContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link JavardairParser#compoundassign}.
-	 * @param ctx the parse tree
-	 */
-	void enterCompoundassign(JavardairParser.CompoundassignContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link JavardairParser#compoundassign}.
-	 * @param ctx the parse tree
-	 */
-	void exitCompoundassign(JavardairParser.CompoundassignContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link JavardairParser#type}.
 	 * @param ctx the parse tree
 	 */
