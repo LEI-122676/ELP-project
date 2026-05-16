@@ -490,7 +490,7 @@ class JavardairTest {
         assertEquals("nao", runCode("""if (1 == 2) << print ("sim"). >> else << print ("nao"). >>"""))
     }
 
-    @Test fun `parsing - for loop com lista injetada`() {
+    @Test fun `parsing - for loop com lista `() {
         val output = runCode(
             "for (i >>> items) << print (i). >>",
             params = listOf("items"),
@@ -674,6 +674,197 @@ class JavardairTest {
             listOf(
                 Assign(Type.CONSTANT,  "k", Literal(1)),
                 Assign(Type.MUTABLE,   "k", Literal(2))
+            ),
+            emptyList()
+        )
+        val interp = Interpreter(script)
+        assertThrows<RuntimeException> {
+            interp.runScript(script, StringBuilder())
+        }
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 5. TESTES COMPOUND ASSIGN  (x += expr  →  x := x op expr)
+    // ═════════════════════════════════════════════════════════════
+
+    // ── 5.1 Operadores numéricos básicos ─────────────────────────
+
+    @Test fun `compound assign - += acumula valor`() {
+        assertEquals("8", runCode("""
+            mut x := 5.
+            x += 3.
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - -= subtrai valor`() {
+        assertEquals("6", runCode("""
+            mut x := 10.
+            x -= 4.
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - *= multiplica valor`() {
+        assertEquals("15", runCode("""
+            mut x := 3.
+            x *= 5.
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - div= divide valor`() {
+        assertEquals("4", runCode("""
+            mut x := 12.
+            x /= 3.
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - mod= aplica modulo`() {
+        assertEquals("1", runCode("""
+            mut x := 7.
+            x %= 3.
+            print x.
+        """.trimIndent()))
+    }
+
+    // ── 5.2 Acumulações múltiplas ─────────────────────────────────
+
+    @Test fun `compound assign - multiplos += acumulam corretamente`() {
+        assertEquals("10", runCode("""
+            mut x := 0.
+            x += 3.
+            x += 3.
+            x += 4.
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - mistura de operadores`() {
+        // x = 10, x += 5 → 15, x -= 3 → 12, x *= 2 → 24
+        assertEquals("24", runCode("""
+            mut x := 10.
+            x += 5.
+            x -= 3.
+            x *= 2.
+            print x.
+        """.trimIndent()))
+    }
+
+    // ── 5.3 Com expressões no lado direito ────────────────────────
+
+    @Test fun `compound assign - lado direito e expressao aritmetica`() {
+        assertEquals("11", runCode("""
+            mut x := 5.
+            x += 3 + 3.
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - lado direito e outra variavel`() {
+        assertEquals("9", runCode("""
+            mut x := 4.
+            mut y := 5.
+            x += y.
+            print x.
+        """.trimIndent()))
+    }
+
+    // ── 5.4 Concatenação de strings com += ───────────────────────
+
+    @Test fun `compound assign - += concatena strings`() {
+        assertEquals("olá mundo", runCode("""
+            mut s := "olá ".
+            s += "mundo".
+            print s.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - += concatena string com numero`() {
+        assertEquals("item3", runCode("""
+            mut s := "item".
+            s += 3.
+            print s.
+        """.trimIndent()))
+    }
+
+    // ── 5.5 Dentro de estruturas de controlo ─────────────────────
+
+    @Test fun `compound assign - += dentro de for conta iteracoes`() {
+        assertEquals("3", runCode(
+            """
+            mut count := 0.
+            for (i >>> lista) <<
+                count += 1.
+            >>
+            print count.
+            """.trimIndent(),
+            params  = listOf("lista"),
+            context = mapOf("lista" to listOf("a", "b", "c"))
+        ))
+    }
+
+    @Test fun `compound assign - += dentro de if so executa quando condicao verdadeira`() {
+        assertEquals("15", runCode("""
+            mut x := 10.
+            if (x == 10) <<
+                x += 5.
+            >>
+            print x.
+        """.trimIndent()))
+    }
+
+    @Test fun `compound assign - += nao executa quando if falso`() {
+        assertEquals("10", runCode("""
+            mut x := 10.
+            if (x == 99) <<
+                x += 5.
+            >>
+            print x.
+        """.trimIndent()))
+    }
+
+    // ── 5.6 Casos de erro ────────────────────────────────────────
+
+    @Test fun `compound assign - em constante lanca excecao`() {
+        // const não pode ser reatribuída, logo compound assign também falha
+        val script = Script(
+            listOf(
+                Assign(Type.CONSTANT, "c", Literal(5)),
+                // desaçucara para: Assign(MUTABLE, "c", BinaryExpression(Variable("c"), PLUS, Literal(1)))
+                // mas o interpretador recusa reatribuir uma const como mut
+                Assign(Type.MUTABLE, "c", BinaryExpression(Variable(listOf("c")), Operator.PLUS, Literal(1)))
+            ),
+            emptyList()
+        )
+        val interp = Interpreter(script)
+        assertThrows<RuntimeException> {
+            interp.runScript(script, StringBuilder())
+        }
+    }
+
+    @Test fun `compound assign - em variavel nao definida lanca excecao`() {
+        // z nunca foi declarada; Variable("z") lança RuntimeException no calc
+        val script = Script(
+            listOf(
+                Assign(Type.MUTABLE, "z",
+                    BinaryExpression(Variable(listOf("z")), Operator.PLUS, Literal(1)))
+            ),
+            emptyList()
+        )
+        val interp = Interpreter(script)
+        assertThrows<RuntimeException> {
+            interp.runScript(script, StringBuilder())
+        }
+    }
+
+    @Test fun `compound assign - divisao por zero lanca excecao`() {
+        val script = Script(
+            listOf(
+                Assign(Type.MUTABLE, "x", Literal(10)),
+                Assign(Type.MUTABLE, "x",
+                    BinaryExpression(Variable(listOf("x")), Operator.DIVISION, Literal(0)))
             ),
             emptyList()
         )
