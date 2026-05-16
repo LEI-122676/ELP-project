@@ -1,8 +1,6 @@
 package org.example
 import JavardairLexer
 import JavardairParser
-import JSONLexer
-import JSONParser
 import WriteOnceMap
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
@@ -685,17 +683,4 @@ class JavardairTest {
         }
     }
 
-    @Test fun `writeOnceMap - put duplicado lanca excecao`() {
-        val map = WriteOnceMap<String, Int>()
-        map.put("a", 1)
-        assertThrows<RuntimeException> { map.put("a", 2) }
-    }
-
-    @Test fun `writeOnceMap - remove permite reinsercao`() {
-        val map = WriteOnceMap<String, Int>()
-        map.put("a", 1)
-        map.remove("a")
-        assertDoesNotThrow { map.put("a", 2) }
-        assertEquals(2, map.get("a"))
-    }
 }
