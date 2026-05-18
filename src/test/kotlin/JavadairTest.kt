@@ -373,7 +373,7 @@ class JavardairTest {
     }
 
     @Test fun `parsing - if verdadeiro`() {
-        assertEquals("ok", runCode("""if (1 == 1) << print "ok". >>"""))
+        assertEquals("ok", runCode("""if (1 == 1) << print ("ok"). >>"""))
     }
 
     @Test fun `parsing - if falso com else`() {
@@ -403,22 +403,22 @@ class JavardairTest {
         assertEquals("menor", runCode("""
             mut a := 3.
             if (a < 5) <<
-                print "menor".
+                print ("menor").
             >> else <<
-                print "maior".
+                print ("maior").
             >>
         """.trimIndent()))
     }
 
     @Test fun `parsing - comentario e ignorado`() {
-        assertEquals("42", runCode("### isto é um comentário\nprint 42."))
+        assertEquals("42", runCode("### isto é um comentário\nprint (42)."))
     }
 
     @Test fun `parsing - multiplos prints`() {
         val out = runCode("""
-            print 1.
-            print 2.
-            print 3.
+            print (1).
+            print (2).
+            print (3).
         """.trimIndent())
         assertEquals("1\n2\n3", out)
     }
@@ -438,7 +438,7 @@ class JavardairTest {
         }
 
         exec("mut contador := 10.", emptyList())
-        val out = exec("print contador.", listOf("contador"))
+        val out = exec("print (contador).", listOf("contador"))
         assertEquals("10", out)
     }
     @Test fun `parsing (sem interp) - variavel declarada num bloco acessivel no seguinte`() {
@@ -456,7 +456,7 @@ class JavardairTest {
         }
 
         exec("mut contador := 10.", emptyList())
-        val out = exec("print contador.", listOf("contador"))
+        val out = exec("print (contador).", listOf("contador"))
         assertEquals("10", out)
     }
 
@@ -465,14 +465,14 @@ class JavardairTest {
 
 
     @Test fun `integracao - substituicao simples de variavel`() {
-        val template = "<h1>{{ print nome. }}</h1>"
+        val template = "<h1>{{ print (nome). }}</h1>"
         val json     = """{"nome": "Javardair"}"""
         val output   = renderTemplate(template, json)
         assertEquals("<h1>Javardair\n</h1>", output)
     }
 
     @Test fun `integracao - multiplas substituicoes`() {
-        val template = "{{ print saudacao. }} {{ print alvo. }}"
+        val template = "{{ print (saudacao). }} {{ print (alvo). }}"
         val json     = """{"saudacao": "Olá", "alvo": "mundo"}"""
         val output   = renderTemplate(template, json)
         assertEquals("Olá\n mundo\n", output)
@@ -504,13 +504,13 @@ class JavardairTest {
     }
 
     @Test fun `integracao - acesso a subpropriedade JSON`() {
-        val template = """{{ print pessoa..cidade. }}"""
+        val template = """{{ print (pessoa..cidade). }}"""
         val json     = """{"pessoa": {"cidade": "Lisboa"}}"""
         assertEquals("Lisboa\n", renderTemplate(template, json))
     }
 
     @Test fun `integracao - conteudo estatico preservado`() {
-        val template = "<html>\n{{ print titulo. }}\n</html>"
+        val template = "<html>\n{{ print (titulo). }}\n</html>"
         val json     = """{"titulo": "Bem-vindo"}"""
         val output   = renderTemplate(template, json)
         assertTrue(output.contains("<html>"))
@@ -624,7 +624,7 @@ class JavardairTest {
         assertEquals("15", runCode("""
             mut x := 3.
             x *= 5.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
