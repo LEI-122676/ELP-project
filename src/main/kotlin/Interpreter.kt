@@ -159,21 +159,23 @@ class Interpreter(var script: Script) {
                     return left.toString() + right.toString()
                 }
 
-                val leftInt = left?.toString()?.toIntOrNull() ?: 0
-                val rightInt = right?.toString()?.toIntOrNull() ?: 0
+                val leftVal = left?.toString()?.toDoubleOrNull() ?: 0.0
+                val rightVal = right?.toString()?.toDoubleOrNull() ?: 0.0
+
+                fun format(res: Double): Number = if (res % 1.0 == 0.0) res.toInt() else res
 
                 when (exp.operator) {
-                    Operator.PLUS -> leftInt + rightInt
-                    Operator.MINUS -> leftInt - rightInt
-                    Operator.TIMES -> leftInt * rightInt
-                    Operator.DIVISION -> if (rightInt != 0) leftInt / rightInt else throw RuntimeException("Divisão por zero!")
-                    Operator.MODULE -> if (rightInt != 0) leftInt % rightInt else throw RuntimeException("Divisão por zero!")
+                    Operator.PLUS -> format(leftVal + rightVal)
+                    Operator.MINUS -> format(leftVal - rightVal)
+                    Operator.TIMES -> format(leftVal * rightVal)
+                    Operator.DIVISION -> if (rightVal != 0.0) format(leftVal / rightVal) else throw RuntimeException("Divisão por zero!")
+                    Operator.MODULE -> if (rightVal != 0.0) format(leftVal % rightVal) else throw RuntimeException("Divisão por zero!")
                     Operator.EQUALSTO -> if(left == right) 1 else 0
                     Operator.DIFFERENT -> if(left != right) 1 else 0
-                    Operator.LESSTHEN -> if(leftInt < rightInt) 1 else 0
-                    Operator.LESSOREQUALTO -> if(leftInt <= rightInt) 1 else 0
-                    Operator.GREATERTHEN -> if(leftInt > rightInt) 1 else 0
-                    Operator.GREATEROREQUALTO -> if(leftInt >= rightInt) 1 else 0
+                    Operator.LESSTHEN -> if(leftVal < rightVal) 1 else 0
+                    Operator.LESSOREQUALTO -> if(leftVal <= rightVal) 1 else 0
+                    Operator.GREATERTHEN -> if(leftVal > rightVal) 1 else 0
+                    Operator.GREATEROREQUALTO -> if(leftVal >= rightVal) 1 else 0
                 }
             }
         }

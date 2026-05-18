@@ -488,11 +488,19 @@ class JavardairTest {
     }
 
     @Test fun `integracao - for loop sobre array JSON`() {
-        val template = """{{ for (i >>> frutas) << print i. >> }}"""
+        val template = """{{ for (i >>> frutas) << print (i). >> }}"""
         val json     = """{"frutas": ["maca", "pera", "uva"]}"""
         val output   = renderTemplate(template, json)
         // Itera sobre índices 0,1,2
         assertEquals("0\n1\n2\n", output)
+    }
+
+    @Test fun `integracao - for loop sobre elementos do array JSON`() {
+        val template = """{{ for (i >>> frutas) << print (frutas..i). >> }}"""
+        val json     = """{"frutas": ["maca", "pera", "uva"]}"""
+        val output   = renderTemplate(template, json)
+        // Itera sobre índices 0,1,2
+        assertEquals("maca\npera\nuva\n", output)
     }
 
     @Test fun `integracao - acesso a subpropriedade JSON`() {

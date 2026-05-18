@@ -84,7 +84,10 @@ fun JavardairParser.ExpressionContext.toAST(): Expression {
 
 fun JavardairParser.TermContext.toAST(): Expression =
     when {
-        NUMBER() != null -> Literal(NUMBER().text.toInt())
+        NUMBER() != null -> {
+            val t = NUMBER().text
+            if (t.contains(".")) Literal(t.toDouble()) else Literal(t.toInt())
+        }
         STRING() != null -> StringLiteral(STRING().text.removeSurrounding("\""))
         VARIABLE().isNotEmpty() -> Variable(VARIABLE().map { it.text })
         expression() != null -> expression().toAST()
