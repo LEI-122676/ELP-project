@@ -30,7 +30,61 @@ java -cp "build/classes/kotlin/main:build/resources/main:build/libs/project-1.0-
 
 > O executável espera **sempre** os argumentos `-f`, `-i` e `-o` (template, input JSON e ficheiro de saída).
 
-## Tutorial rápido de Javardair
+## Tutorial de utilização
+
+1. Crie um ficheiro de template com blocos Javardair dentro de `{{ ... }}`.
+2. Crie um ficheiro JSON com as variáveis de entrada.
+3. Execute a classe `org.example.MainKt` com os argumentos:
+   - `-f` caminho do template
+   - `-i` caminho do JSON
+   - `-o` caminho do ficheiro de saída
+
+### Exemplo rápido
+
+**Template (`template1.html`):**
+
+```html
+<html>
+<h1>
+    {{ print(hello). }}
+</h1>
+<h2>
+    {{ print(world). }}
+</h2>
+</html>
+```
+
+**JSON de entrada (`input1.json`):**
+
+```json
+{
+  "hello": "olá",
+  "world": "mundo"
+}
+```
+
+**Execução (em IDE ou via linha de comando com argumentos):**
+
+```text
+org.example.MainKt -f src/test/testFiles/template1.html -i src/test/testFiles/input1.json -o /tmp/output1.html
+```
+
+**Resultado esperado (`/tmp/output1.html`):**
+
+```html
+<html>
+<h1>
+    olá
+
+</h1>
+<h2>
+    mundo
+
+</h2>
+</html>
+```
+
+## Tutorial de Javardair
 
 ### 1) Onde escrever Javardair
 
@@ -61,7 +115,7 @@ const soma := 2 + 3.
 const igual := 5 == 5.
 ```
 
-### 4) Impressão de resultados
+### 4) Prints
 
 O output final do template é construído com `print(...)`.
 
@@ -102,9 +156,8 @@ for (i >>> valores) <<
 ### 8) Comentários
 
 ```text
-### Comentário de linha
+### Comentário
 ```
 
 ---
-
-Se precisares de mais exemplos, consulta os ficheiros em `src/test/testFiles/`.
+Para mais exemplos consultar os ficheiros em `src/test/testFiles/`.
