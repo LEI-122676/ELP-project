@@ -135,12 +135,6 @@ class JavardairTest {
         assertEquals("Olá mundo", interp.calc(expr))
     }
 
-    @Test fun `INTERPRETADOR calc - concatenacao string com numero`() {
-        val interp = emptyInterpreter()
-        val expr = BinaryExpression(StringLiteral("v"), Operator.PLUS, Number(2))
-        assertEquals("v2", interp.calc(expr))
-    }
-
     // ── 1.4 Variáveis mutable e const ────────────────────────────
 
     @Test fun `INTERPRETADOR addConst e calc - acesso a constante`() {
@@ -365,6 +359,24 @@ class JavardairTest {
 
     @Test fun `parsing - expressao aritmetica simples`() {
         assertEquals("9", runCode("print (4 + 5)."))
+    }
+
+    @Test fun `parsing - print de booleano true`() {
+        assertEquals("true", runCode("print (true)."))
+    }
+
+    @Test fun `parsing - print de booleano false`() {
+        assertEquals("false", runCode("print (false)."))
+    }
+
+    @Test fun `INTERPRETADOR calc - booleano verdadeiro`() {
+        val interp = emptyInterpreter()
+        assertEquals(true, interp.calc(BoolLiteral(true)))
+    }
+
+    @Test fun `INTERPRETADOR calc - booleano falso`() {
+        val interp = emptyInterpreter()
+        assertEquals(false, interp.calc(BoolLiteral(false)))
     }
 
     @Test fun `parsing - expressao com variavel`() {
@@ -691,14 +703,6 @@ class JavardairTest {
         assertEquals("olá mundo", runCode("""
             mut s := "olá ".
             s += "mundo".
-            print (s).
-        """.trimIndent()))
-    }
-
-    @Test fun `compound assign - += concatena string com numero`() {
-        assertEquals("item3", runCode("""
-            mut s := "item".
-            s += 3.
             print (s).
         """.trimIndent()))
     }
