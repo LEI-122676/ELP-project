@@ -9,7 +9,6 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
         fun checkExpression(expression: Expression, lineIndex: Int) {
             when (expression) {
                 is Variable -> {
-                    // Check against the first part of the path, as it holds the base variable name
                     if (expression.path.isEmpty() || !definedVariables.contains(expression.path.first())) {
                         errors.add(VarError(expression.path.firstOrNull() ?: "Unknown", lineIndex))
                     }
@@ -53,7 +52,7 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                         errors.add(VarError("'break' fora de 'for loop'", lineIndex))
                     }
                 }
-                else -> { /* TODO adicionar compound assign  */ }
+                else -> { /*  */ }
             }
 
             lineIndex++
