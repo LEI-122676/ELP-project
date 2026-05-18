@@ -117,7 +117,7 @@ class Interpreter(var script: Script) {
                 throw RuntimeException("Erro de tipos: não podes usar '$operator' com Booleans")
             }
             if (!(left is Boolean && right is Boolean)) {
-                throw RuntimeException("Erro de tipos: não podes comparar esses tipos}")
+                throw RuntimeException("Erro de tipos: não podes comparar esses tipos")
             }
         }
 
@@ -126,7 +126,7 @@ class Interpreter(var script: Script) {
                 throw RuntimeException("Erro de tipos: não podes usar '$operator' com Strings")
             }
             if (!(left is String && right is String)) {
-                throw RuntimeException("Erro de tipos: não podes comparar esses tipos}")
+                throw RuntimeException("Erro de tipos: não podes comparar esses tipos")
             }
         }
     }
