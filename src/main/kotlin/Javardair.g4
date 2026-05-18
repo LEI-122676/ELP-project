@@ -14,7 +14,7 @@ type: MUT | CONST;
 
 expression: term (OPERATOR term)*;
 
-term: NUMBER | STRING | VARIABLE (ACCESS VARIABLE)* | OPENPARENTHESIS expression CLOSEPARENTHESIS;
+term: BOOLEAN | NUMBER | STRING | VARIABLE (ACCESS VARIABLE)* | OPENPARENTHESIS expression CLOSEPARENTHESIS;
 
 print: 'print' OPENPARENTHESIS expression CLOSEPARENTHESIS SEPARATOR;
 
@@ -32,6 +32,7 @@ MUT: 'mut';
 CONST: 'const';
 IN: '>>>';
 
+BOOLEAN : 'true' | 'false';
 VARIABLE: [A-Za-z] ([A-Za-z_0-9]+)?;
 STRING: '"' ~["]* '"';
 
@@ -51,3 +52,4 @@ ACCESS: '..';
 COMMENT: '###' ~[\r\n]* -> skip;
 SEPARATOR: '.';
 WS: [ \t\r\n]+ -> skip;
+
