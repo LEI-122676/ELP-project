@@ -1,34 +1,11 @@
 # ELP Project — Javardair
 
-Este projeto disponibiliza um motor de templates HTML com a linguagem **Javardair** embutida. O template contém blocos `{{ ... }}` com código Javardair, e o motor combina esse template com um ficheiro JSON para gerar o HTML final.
+Este projeto é **open source** e disponibiliza um motor de templates HTML com a linguagem **Javardair** embutida. O template contém blocos `{{ ... }}` com código Javardair, e o motor combina esse template com um ficheiro JSON para gerar o HTML final.
 
 ## Requisitos
 
 - JDK 25 (o projeto usa `jvmToolchain(25)` no Gradle)
 - Gradle Wrapper (`./gradlew`)
-
-## Como gerar HTML (linha de comandos)
-
-1. Compilar o projeto:
-
-```bash
-./gradlew build
-```
-
-2. Executar o motor com template e JSON:
-
-```bash
-# localizar o jar do runtime do ANTLR no cache do Gradle
-ANTLR_JAR=$(find ~/.gradle/caches -name "antlr4-runtime-4.13.2.jar" | head -n 1)
-
-java -cp "build/classes/kotlin/main:build/resources/main:build/libs/project-1.0-SNAPSHOT.jar:${ANTLR_JAR}" \
-  org.example.MainKt \
-  -f src/test/testFiles/template1.html \
-  -i src/test/testFiles/input1.json \
-  -o /tmp/output.html
-```
-
-> O executável espera **sempre** os argumentos `-f`, `-i` e `-o` (template, input JSON e ficheiro de saída).
 
 ## Tutorial de utilização
 
@@ -83,6 +60,9 @@ org.example.MainKt -f src/test/testFiles/template1.html -i src/test/testFiles/in
 </h2>
 </html>
 ```
+Nota:
+> O executável espera **sempre** os argumentos `-f`, `-i` e `-o` (template, input JSON e ficheiro de saída).
+
 
 ## Tutorial de Javardair
 
