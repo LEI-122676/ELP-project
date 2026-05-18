@@ -600,7 +600,7 @@ class JavardairTest {
         assertEquals("8", runCode("""
             mut x := 5.
             x += 3.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -608,7 +608,7 @@ class JavardairTest {
         assertEquals("6", runCode("""
             mut x := 10.
             x -= 4.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -624,7 +624,7 @@ class JavardairTest {
         assertEquals("4", runCode("""
             mut x := 12.
             x /= 3.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -632,7 +632,7 @@ class JavardairTest {
         assertEquals("1", runCode("""
             mut x := 7.
             x %= 3.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -644,7 +644,7 @@ class JavardairTest {
             x += 3.
             x += 3.
             x += 4.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -655,7 +655,7 @@ class JavardairTest {
             x += 5.
             x -= 3.
             x *= 2.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -665,7 +665,7 @@ class JavardairTest {
         assertEquals("11", runCode("""
             mut x := 5.
             x += 3 + 3.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -674,7 +674,7 @@ class JavardairTest {
             mut x := 4.
             mut y := 5.
             x += y.
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -684,7 +684,7 @@ class JavardairTest {
         assertEquals("olá mundo", runCode("""
             mut s := "olá ".
             s += "mundo".
-            print s.
+            print (s).
         """.trimIndent()))
     }
 
@@ -692,7 +692,7 @@ class JavardairTest {
         assertEquals("item3", runCode("""
             mut s := "item".
             s += 3.
-            print s.
+            print (s).
         """.trimIndent()))
     }
 
@@ -705,7 +705,7 @@ class JavardairTest {
             for (i >>> lista) <<
                 count += 1.
             >>
-            print count.
+            print (count).
             """.trimIndent(),
             params  = listOf("lista"),
             context = mapOf("lista" to listOf("a", "b", "c"))
@@ -718,7 +718,7 @@ class JavardairTest {
             if (x == 10) <<
                 x += 5.
             >>
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
@@ -728,7 +728,7 @@ class JavardairTest {
             if (x == 99) <<
                 x += 5.
             >>
-            print x.
+            print (x).
         """.trimIndent()))
     }
 
