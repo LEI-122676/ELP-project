@@ -17,8 +17,9 @@ data class Script(val instructions: List<Instruction>, val parameters: List<Stri
                     checkExpression(expression.left, lineIndex)
                     checkExpression(expression.right, lineIndex)
                 }
-                is Literal -> {}
+                is Number -> {}
                 is StringLiteral -> {}
+                is BoolLiteral -> {}
             }
         }
 
@@ -121,13 +122,6 @@ data class Assign(val type: Type, val variableName: String, val expression: Expr
         return "$variableName := $expression."
     }
 }
-data class CompoundAssign(
-    val variableName: String,
-    val operator: Operator,
-    val expression: Expression
-) : Instruction {
-    override fun toString() = "$variableName ${operator}= $expression."
-}
 
 data class Print(val expression: Expression): Instruction {
     fun print(outputBuilder: StringBuilder, interpreter: Interpreter) {
@@ -141,16 +135,25 @@ data class Print(val expression: Expression): Instruction {
 
 sealed interface Expression
 
-data class Literal(val value: Number): Expression {
+data class Number(val value: kotlin.Number): Expression {
     override fun toString(): String {
-        return value.toString()
+        return when (value) {
+            is Int -> value.toString()
+            is Double -> if (value == value.toLong().toDouble()) value.toLong().toString() else value.toString()
+            else -> value.toString()
+        }
     }
 }
+
 
 data class StringLiteral(val value: String): Expression {
     override fun toString(): String {
         return value
     }
+}
+
+data class BoolLiteral(val value: Boolean): Expression {
+    override fun toString(): String = value.toString()
 }
 
 data class Variable(val path: List<String>): Expression {

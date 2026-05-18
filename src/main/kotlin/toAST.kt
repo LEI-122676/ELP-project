@@ -45,19 +45,6 @@ fun JavardairParser.AssignContext.toAST(): Assign {
     return Assign(type().toAST(), VARIABLE().text, expression().toAST())
 }
 
-//fun JavardairParser.CompoundassignContext.toAST(): CompoundAssign {
-//
-//    val op = when (COMPOUNDOP().text) {
-//        "+=" -> Operator.PLUS
-//        "-=" -> Operator.MINUS
-//        "*=" -> Operator.TIMES
-//        "/=" -> Operator.DIVISION
-//        "%=" -> Operator.MODULE
-//        else -> throw IllegalArgumentException("Operador composto desconhecido: ${COMPOUNDOP().text}")
-//    }
-//    return CompoundAssign(VARIABLE().text, op, expression().toAST())
-//}
-
 fun JavardairParser.TypeContext.toAST(): Type =
     when (this.text) {
         "mut" -> Type.MUTABLE
@@ -78,6 +65,7 @@ fun JavardairParser.ExpressionContext.toAST(): Expression {
         val operator = operators[i].text.toOperator()
         val rightTerm = terms[i + 1].toAST()
         result = BinaryExpression(result, operator, rightTerm)
+
     }
     return result
 }
@@ -86,9 +74,10 @@ fun JavardairParser.TermContext.toAST(): Expression =
     when {
         NUMBER() != null -> {
             val t = NUMBER().text
-            if (t.contains(".")) Literal(t.toDouble()) else Literal(t.toInt())
+            if (t.contains('.')) Number(t.toDouble()) else Number(t.toInt())
         }
         STRING() != null -> StringLiteral(STRING().text.removeSurrounding("\""))
+        BOOLEAN() != null -> BoolLiteral(BOOLEAN().text.toBoolean())
         VARIABLE().isNotEmpty() -> Variable(VARIABLE().map { it.text })
         expression() != null -> expression().toAST()
         else -> throw IllegalStateException("Unknown term type")

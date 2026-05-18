@@ -111,6 +111,25 @@ class Interpreter(var script: Script) {
             }
         }
     }
+    private fun assertSameType(left: Any?, right: Any?, operator: Operator) {
+        if (left is Boolean || right is Boolean) {
+            if (operator != Operator.EQUALSTO && operator != Operator.DIFFERENT) {
+                throw RuntimeException("Erro de tipos: não podes usar '$operator' com Booleans")
+            }
+            if (!(left is Boolean && right is Boolean)) {
+                throw RuntimeException("Erro de tipos: não podes comparar esses tipos}")
+            }
+        }
+
+        if (left is String || right is String) {
+            if (operator != Operator.EQUALSTO && operator != Operator.DIFFERENT && operator != Operator.PLUS) {
+                throw RuntimeException("Erro de tipos: não podes usar '$operator' com Strings")
+            }
+            if (!(left is String && right is String)) {
+                throw RuntimeException("Erro de tipos: não podes comparar esses tipos}")
+            }
+        }
+    }
 
     fun run(param: List<Pair<String, Any?>>) {
         if (!script.validate().isEmpty()) return
@@ -124,7 +143,8 @@ class Interpreter(var script: Script) {
 
     fun calc(exp: Expression): Any? {
         return when (exp) {
-            is Literal -> exp.value
+            is BoolLiteral -> exp.value
+            is Number -> exp.value
             is StringLiteral -> exp.value
             is Variable -> {
                 var current: Any? = constMemory.get(exp.path.first())
@@ -154,6 +174,7 @@ class Interpreter(var script: Script) {
             is BinaryExpression -> {
                 val left = calc(exp.left)
                 val right = calc(exp.right)
+                assertSameType(left, right, exp.operator)
 
                 if (exp.operator == Operator.PLUS && (left is String || right is String)) {
                     return left.toString() + right.toString()
@@ -162,7 +183,7 @@ class Interpreter(var script: Script) {
                 val leftVal = left?.toString()?.toDoubleOrNull() ?: 0.0
                 val rightVal = right?.toString()?.toDoubleOrNull() ?: 0.0
 
-                fun format(res: Double): Number = if (res % 1.0 == 0.0) res.toInt() else res
+                fun format(res: Double): kotlin.Number = if (res % 1.0 == 0.0) res.toInt() else res
 
                 when (exp.operator) {
                     Operator.PLUS -> format(leftVal + rightVal)
