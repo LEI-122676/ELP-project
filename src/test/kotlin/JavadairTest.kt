@@ -53,47 +53,47 @@ class JavardairTest {
 
     // ── 1.1 Expressões aritméticas ────────────────────────────────
 
-    @Test fun `calc - soma de literais`() {
+    @Test fun `INTERPRETADOR calc - soma de literais`() {
         val interp = emptyInterpreter()
         val expr = BinaryExpression(Literal(3), Operator.PLUS, Literal(4))
         assertEquals(7, interp.calc(expr))
     }
 
-    @Test fun `calc - subtracao`() {
+    @Test fun `INTERPRETADOR calc - subtracao`() {
         val interp = emptyInterpreter()
         assertEquals(1, interp.calc(BinaryExpression(Literal(5), Operator.MINUS, Literal(4))))
     }
 
-    @Test fun `calc - multiplicacao`() {
+    @Test fun `INTERPRETADOR calc - multiplicacao`() {
         val interp = emptyInterpreter()
         assertEquals(12, interp.calc(BinaryExpression(Literal(3), Operator.TIMES, Literal(4))))
     }
 
-    @Test fun `calc - divisao`() {
+    @Test fun `INTERPRETADOR calc - divisao`() {
         val interp = emptyInterpreter()
         assertEquals(3, interp.calc(BinaryExpression(Literal(9), Operator.DIVISION, Literal(3))))
     }
 
-    @Test fun `calc - modulo`() {
+    @Test fun `INTERPRETADOR calc - modulo`() {
         val interp = emptyInterpreter()
         assertEquals(1, interp.calc(BinaryExpression(Literal(7), Operator.MODULE, Literal(3))))
     }
 
-    @Test fun `calc - divisao por zero lanca excecao`() {
+    @Test fun `INTERPRETADOR calc - divisao por zero lanca excecao`() {
         val interp = emptyInterpreter()
         assertThrows<RuntimeException> {
             interp.calc(BinaryExpression(Literal(5), Operator.DIVISION, Literal(0)))
         }
     }
 
-    @Test fun `calc - modulo por zero lanca excecao`() {
+    @Test fun `INTERPRETADOR calc - modulo por zero lanca excecao`() {
         val interp = emptyInterpreter()
         assertThrows<RuntimeException> {
             interp.calc(BinaryExpression(Literal(5), Operator.MODULE, Literal(0)))
         }
     }
 
-    @Test fun `calc - expressao aritmetica encadeada`() {
+    @Test fun `INTERPRETADOR calc - expressao aritmetica encadeada`() {
         // (2 + 3) * 4  → avaliação esquerda para direita sem precedência própria
         val interp = emptyInterpreter()
         val inner = BinaryExpression(Literal(2), Operator.PLUS, Literal(3))
@@ -103,40 +103,40 @@ class JavardairTest {
 
     // ── 1.2 Expressões booleanas / comparação ────────────────────
 
-    @Test fun `calc - igualdade verdadeira`() {
+    @Test fun `INTERPRETADOR calc - igualdade verdadeira`() {
         val interp = emptyInterpreter()
         assertEquals(1, interp.calc(BinaryExpression(Literal(5), Operator.EQUALSTO, Literal(5))))
     }
 
-    @Test fun `calc - igualdade falsa`() {
+    @Test fun `INTERPRETADOR calc - igualdade falsa`() {
         val interp = emptyInterpreter()
         assertEquals(0, interp.calc(BinaryExpression(Literal(5), Operator.EQUALSTO, Literal(6))))
     }
 
-    @Test fun `calc - diferente`() {
+    @Test fun `INTERPRETADOR calc - diferente`() {
         val interp = emptyInterpreter()
         assertEquals(1, interp.calc(BinaryExpression(Literal(3), Operator.DIFFERENT, Literal(4))))
     }
 
-    @Test fun `calc - menor que verdadeiro`() {
+    @Test fun `INTERPRETADOR calc - menor que verdadeiro`() {
         val interp = emptyInterpreter()
         assertEquals(1, interp.calc(BinaryExpression(Literal(2), Operator.LESSTHEN, Literal(5))))
     }
 
-    @Test fun `calc - maior ou igual verdadeiro`() {
+    @Test fun `INTERPRETADOR calc - maior ou igual verdadeiro`() {
         val interp = emptyInterpreter()
         assertEquals(1, interp.calc(BinaryExpression(Literal(5), Operator.GREATEROREQUALTO, Literal(5))))
     }
 
     // ── 1.3 Concatenação de strings ──────────────────────────────
 
-    @Test fun `calc - concatenacao de strings`() {
+    @Test fun `INTERPRETADOR calc - concatenacao de strings`() {
         val interp = emptyInterpreter()
         val expr = BinaryExpression(StringLiteral("Olá "), Operator.PLUS, StringLiteral("mundo"))
         assertEquals("Olá mundo", interp.calc(expr))
     }
 
-    @Test fun `calc - concatenacao string com numero`() {
+    @Test fun `INTERPRETADOR calc - concatenacao string com numero`() {
         val interp = emptyInterpreter()
         val expr = BinaryExpression(StringLiteral("v"), Operator.PLUS, Literal(2))
         assertEquals("v2", interp.calc(expr))
@@ -144,20 +144,20 @@ class JavardairTest {
 
     // ── 1.4 Variáveis mutable e const ────────────────────────────
 
-    @Test fun `addConst e calc - acesso a constante`() {
+    @Test fun `INTERPRETADOR addConst e calc - acesso a constante`() {
         val interp = emptyInterpreter()
         interp.addConst("nome", "Javardair")
         assertEquals("Javardair", interp.calc(Variable(listOf("nome"))))
     }
 
-    @Test fun `addConst - nao sobrescreve constante existente`() {
+    @Test fun `INTERPRETADOR addConst - nao sobrescreve constante existente`() {
         val interp = emptyInterpreter()
         interp.addConst("x", 10)
         interp.addConst("x", 99)          // segunda chamada deve ser ignorada
         assertEquals(10, interp.calc(Variable(listOf("x"))))
     }
 
-    @Test fun `calc - variavel nao definida lanca excecao`() {
+    @Test fun `INTERPRETADOR calc - variavel nao definida lanca excecao`() {
         val interp = emptyInterpreter()
         assertThrows<RuntimeException> {
             interp.calc(Variable(listOf("indefinida")))
@@ -166,7 +166,7 @@ class JavardairTest {
 
     // ── 1.5 Print (via runScript) ────────────────────────────────
 
-    @Test fun `print - literal numerico`() {
+    @Test fun `INTERPRETADOR print - literal numerico`() {
         val script = Script(listOf(Print(Literal(42))), emptyList())
         val interp = Interpreter(script)
         val sb = StringBuilder()
@@ -174,7 +174,7 @@ class JavardairTest {
         assertEquals("42", sb.toString().trim())
     }
 
-    @Test fun `print - string literal`() {
+    @Test fun `INTERPRETADOR print - string literal`() {
         val script = Script(listOf(Print(StringLiteral("ola"))), emptyList())
         val interp = Interpreter(script)
         val sb = StringBuilder()
@@ -184,7 +184,7 @@ class JavardairTest {
 
     // ── 1.6 Assign + acesso a variável ───────────────────────────
 
-    @Test fun `assign mut e print`() {
+    @Test fun `INTERPRETADOR assign mut e print`() {
         val script = Script(
             listOf(
                 Assign(Type.MUTABLE, "x", Literal(7)),
@@ -198,7 +198,7 @@ class JavardairTest {
         assertEquals("7", sb.toString().trim())
     }
 
-    @Test fun `assign const nao pode ser reatribuida`() {
+    @Test fun `INTERPRETADOR assign const nao pode ser reatribuida`() {
         val script = Script(
             listOf(
                 Assign(Type.CONSTANT, "c", Literal(1)),
@@ -212,7 +212,7 @@ class JavardairTest {
         }
     }
 
-    @Test fun `assign mut pode ser reatribuida`() {
+    @Test fun `INTERPRETADOR assign mut pode ser reatribuida`() {
         val script = Script(
             listOf(
                 Assign(Type.MUTABLE, "n", Literal(1)),
@@ -229,7 +229,7 @@ class JavardairTest {
 
     // ── 1.7 If-Else ──────────────────────────────────────────────
 
-    @Test fun `ifelse - ramo then executado`() {
+    @Test fun `INTERPRETADOR ifelse - ramo then executado`() {
         val script = Script(
             listOf(
                 IfElse(
@@ -246,7 +246,7 @@ class JavardairTest {
         assertEquals("sim", sb.toString().trim())
     }
 
-    @Test fun `ifelse - ramo else executado`() {
+    @Test fun `INTERPRETADOR ifelse - ramo else executado`() {
         val script = Script(
             listOf(
                 IfElse(
@@ -263,7 +263,7 @@ class JavardairTest {
         assertEquals("nao", sb.toString().trim())
     }
 
-    @Test fun `ifelse - sem else e guarda falsa nao imprime nada`() {
+    @Test fun `INTERPRETADOR ifelse - sem else e guarda falsa nao imprime nada`() {
         val script = Script(
             listOf(
                 IfElse(
@@ -281,7 +281,7 @@ class JavardairTest {
 
     // ── 1.8 ForLoop ──────────────────────────────────────────────
 
-    @Test fun `forloop - itera lista`() {
+    @Test fun `INTERPRETADOR forloop - itera lista`() {
         val interp = emptyInterpreter()
         interp.addConst("lista", listOf("a", "b", "c"))
 
@@ -301,7 +301,7 @@ class JavardairTest {
         assertEquals("0\n1\n2", sb.toString().trim())
     }
 
-    @Test fun `forloop - itera mapa`() {
+    @Test fun `INTERPRETADOR forloop - itera mapa`() {
         val interp = emptyInterpreter()
         interp.addConst("obj", mapOf("a" to 1, "b" to 2))
 
@@ -321,7 +321,7 @@ class JavardairTest {
         assertEquals(setOf("a", "b"), lines)
     }
 
-    @Test fun `forloop - break termina ciclo`() {
+    @Test fun `INTERPRETADOR forloop - break termina ciclo`() {
         val interp = emptyInterpreter()
         interp.addConst("lista", listOf(10, 20, 30, 40))
 
@@ -344,9 +344,9 @@ class JavardairTest {
         assertEquals("0", sb.toString().trim())
     }
 
-    // ═════════════════════════════════════════════════════════════
+
     // 2. TESTES DE PARSING (ANTLR → AST)
-    // ═════════════════════════════════════════════════════════════
+
 
     @Test fun `parsing - print de numero`() {
         assertEquals("42", runCode("print (42)."))
@@ -441,10 +441,28 @@ class JavardairTest {
         val out = exec("print contador.", listOf("contador"))
         assertEquals("10", out)
     }
+    @Test fun `parsing (sem interp) - variavel declarada num bloco acessivel no seguinte`() {
+        // Simula dois blocos de script no mesmo interpretador
+        val interp = emptyInterpreter()
 
-    // ═════════════════════════════════════════════════════════════
+        // Bloco 1: declara variável
+        fun exec(code: String, defined: List<String>): String {
+            val lexer  = JavardairLexer(CharStreams.fromString(code))
+            val parser = JavardairParser(CommonTokenStream(lexer))
+            val script = parser.script().toAST(defined)
+            val sb = StringBuilder()
+            interp.runScript(script, sb)
+            return sb.toString().trim()
+        }
+
+        exec("mut contador := 10.", emptyList())
+        val out = exec("print contador.", listOf("contador"))
+        assertEquals("10", out)
+    }
+
+
     // 3. TESTES DE INTEGRAÇÃO (Template Engine end-to-end)
-    // ═════════════════════════════════════════════════════════════
+
 
     @Test fun `integracao - substituicao simples de variavel`() {
         val template = "<h1>{{ print nome. }}</h1>"
@@ -506,9 +524,9 @@ class JavardairTest {
         assertEquals("15\n", output)
     }
 
-    // ═════════════════════════════════════════════════════════════
+
     // 4. TESTES DE VALIDAÇÃO / ERROS
-    // ═════════════════════════════════════════════════════════════
+
 
     @Test fun `validacao - variavel nao definida retorna erro`() {
         val script = Script(
@@ -574,9 +592,7 @@ class JavardairTest {
         }
     }
 
-    // ═════════════════════════════════════════════════════════════
     // 5. TESTES COMPOUND ASSIGN  (x += expr  →  x := x op expr)
-    // ═════════════════════════════════════════════════════════════
 
     // ── 5.1 Operadores numéricos básicos ─────────────────────────
 
@@ -718,7 +734,7 @@ class JavardairTest {
 
     // ── 5.6 Casos de erro ────────────────────────────────────────
 
-    @Test fun `compound assign - em constante lanca excecao`() {
+    @Test fun `INTERPRETADOR compound assign - em constante lanca excecao`() {
         // const não pode ser reatribuída, logo compound assign também falha
         val script = Script(
             listOf(
@@ -735,7 +751,7 @@ class JavardairTest {
         }
     }
 
-    @Test fun `compound assign - em variavel nao definida lanca excecao`() {
+    @Test fun `INTERPRETADOR compound assign - em variavel nao definida lanca excecao`() {
         // z nunca foi declarada; Variable("z") lança RuntimeException no calc
         val script = Script(
             listOf(
@@ -750,7 +766,7 @@ class JavardairTest {
         }
     }
 
-    @Test fun `compound assign - divisao por zero lanca excecao`() {
+    @Test fun `INTERPRETADOR compound assign - divisao por zero lanca excecao`() {
         val script = Script(
             listOf(
                 Assign(Type.MUTABLE, "x", Literal(10)),
