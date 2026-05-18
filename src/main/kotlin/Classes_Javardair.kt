@@ -141,9 +141,9 @@ data class Print(val expression: Expression): Instruction {
 
 sealed interface Expression
 
-data class Literal(val value: Int): Expression {
+data class Literal(val value: Number): Expression {
     override fun toString(): String {
-        return "$value"
+        return value.toString()
     }
 }
 
