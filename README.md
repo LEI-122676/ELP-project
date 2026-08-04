@@ -1,4 +1,4 @@
-# ELP Project — Javardair
+# Javardair Programming Language
 
 Este projeto é **open source** e disponibiliza um motor de templates HTML com a linguagem **Javardair** embutida. O template contém blocos `{{ ... }}` com código Javardair, e o motor combina esse template com um ficheiro JSON para gerar o HTML final.
 
